@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://oceansec.github.io/2022/09/09/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E7%9C%8Bwdigest%E5%BC%80%E5%90%AF%E5%90%8Elsass%E5%86%85%E5%AD%98%E7%9A%84%E5%8F%98%E5%8C%96/</loc>
+    
+    <lastmod>2022-09-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://oceansec.github.io/2022/08/26/%E5%B9%B4%E4%B8%AD%E7%BB%93/</loc>
     
     <lastmod>2022-09-09</lastmod>
@@ -131,6 +140,13 @@
   </url>
   
   <url>
+    <loc>https://oceansec.github.io/tags/windows-mimikaz/</loc>
+    <lastmod>2022-09-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://oceansec.github.io/tags/CISCN-wp/</loc>
     <lastmod>2022-09-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -155,6 +171,13 @@
   
   <url>
     <loc>https://oceansec.github.io/categories/%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2022-09-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://oceansec.github.io/categories/Windows/</loc>
     <lastmod>2022-09-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

@@ -6,7 +6,7 @@
   <link href="https://oceansec.github.io/atom.xml" rel="self"/>
   
   <link href="https://oceansec.github.io/"/>
-  <updated>2022-09-09T06:17:38.432Z</updated>
+  <updated>2022-09-09T10:33:16.451Z</updated>
   <id>https://oceansec.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>通过WinDbg调试看wdigest开启后lsass内存的变化</title>
+    <link href="https://oceansec.github.io/2022/09/09/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E7%9C%8Bwdigest%E5%BC%80%E5%90%AF%E5%90%8Elsass%E5%86%85%E5%AD%98%E7%9A%84%E5%8F%98%E5%8C%96/"/>
+    <id>https://oceansec.github.io/2022/09/09/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E7%9C%8Bwdigest%E5%BC%80%E5%90%AF%E5%90%8Elsass%E5%86%85%E5%AD%98%E7%9A%84%E5%8F%98%E5%8C%96/</id>
+    <published>2022-09-09T10:32:05.282Z</published>
+    <updated>2022-09-09T10:33:16.451Z</updated>
+    
+    <content type="html"><![CDATA[<p>内容修改中</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;内容修改中&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://oceansec.github.io/categories/Windows/"/>
+    
+    
+    <category term="windows,mimikaz" scheme="https://oceansec.github.io/tags/windows-mimikaz/"/>
+    
+  </entry>
   
   <entry>
     <title>年中结</title>
