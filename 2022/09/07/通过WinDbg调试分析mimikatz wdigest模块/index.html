@@ -17,13 +17,13 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>通过WinDbg调试分析mimikatz wdigest模块 | Ocean&#39;s Blog</title>
-  <meta name="description" content="在使用 mimikatz 经常有一个疑惑就是为什么使用简单的命令就可以提取出受 winodws 安全机制保护的密码，而且还是明文，通过这篇文章来简单梳理下其中的工作流程 Windows凭证机制关键基础设施SAM文件SAM (安全账户管理器)，SAM 用来存储 Windows 操作系统密码的数据库文件，为了避免明文密码泄露，SAM 文件中保存的是明文密码经过一系列算法处理过的 Hash 值，被保存">
+  <title>通过WinDbg调试看wdigest开启后lsass内存的变化 | Ocean&#39;s Blog</title>
+  <meta name="description" content="我们知道在 win10&#x2F;server2012 及以上版本开启 Wdigest 的情况下通过 mimikatz 是拿不到明文密码的，需要通过注册表开启 wdigest 才能抓到明文密码，本文通过 windbg 调试来看内存中发生了怎样的变化 在调试之前先来看一下 Windows 凭证机制的基础知识 Windows凭证机制关键基础设施SAM文件SAM (安全账户管理器)，SAM 用来存储">
 <meta property="og:type" content="article">
-<meta property="og:title" content="通过WinDbg调试分析mimikatz wdigest模块">
+<meta property="og:title" content="通过WinDbg调试看wdigest开启后lsass内存的变化">
 <meta property="og:url" content="https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="在使用 mimikatz 经常有一个疑惑就是为什么使用简单的命令就可以提取出受 winodws 安全机制保护的密码，而且还是明文，通过这篇文章来简单梳理下其中的工作流程 Windows凭证机制关键基础设施SAM文件SAM (安全账户管理器)，SAM 用来存储 Windows 操作系统密码的数据库文件，为了避免明文密码泄露，SAM 文件中保存的是明文密码经过一系列算法处理过的 Hash 值，被保存">
+<meta property="og:description" content="我们知道在 win10&#x2F;server2012 及以上版本开启 Wdigest 的情况下通过 mimikatz 是拿不到明文密码的，需要通过注册表开启 wdigest 才能抓到明文密码，本文通过 windbg 调试来看内存中发生了怎样的变化 在调试之前先来看一下 Windows 凭证机制的基础知识 Windows凭证机制关键基础设施SAM文件SAM (安全账户管理器)，SAM 用来存储">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2022/09/08/61wuRfy4nZWcVrB.png">
 <meta property="og:image" content="https://s2.loli.net/2022/09/08/EGyOcXRplBtfCZw.png">
@@ -34,9 +34,11 @@
 <meta property="og:image" content="https://s2.loli.net/2022/09/08/87GabPLCyzDOvWR.png">
 <meta property="og:image" content="https://s2.loli.net/2022/09/08/SWclqVnfgLioCeU.png">
 <meta property="og:image" content="https://s2.loli.net/2022/09/08/M4z2PwaxrOypDIj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/09/09/RfNX8KFEx1oawvH.jpg">
 <meta property="og:image" content="https://s2.loli.net/2022/09/08/lrVumxJvWwPHGIa.png">
+<meta property="og:image" content="https://s2.loli.net/2022/09/09/qDBjCwa3XnfQGMy.png">
 <meta property="article:published_time" content="2022-09-07T14:28:12.479Z">
-<meta property="article:modified_time" content="2022-09-08T01:57:07.819Z">
+<meta property="article:modified_time" content="2022-09-09T06:13:48.921Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="windows,mimikatz">
 <meta name="twitter:card" content="summary">
@@ -272,7 +274,7 @@
                 <a class="category-link" href="/categories/Windows/">Windows</a>
               </p>
               <p class="item-title">
-                <a href="/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/" class="title">通过WinDbg调试分析mimikatz wdigest模块</a>
+                <a href="/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/" class="title">通过WinDbg调试看wdigest开启后lsass内存的变化</a>
               </p>
               <p class="item-date">
                 <time datetime="2022-09-07T14:28:12.479Z" itemprop="datePublished">2022-09-07</time>
@@ -287,7 +289,7 @@
                 <a class="category-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a>
               </p>
               <p class="item-title">
-                <a href="/2022/08/26/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/" class="title">实习总结</a>
+                <a href="/2022/08/26/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/" class="title">年中结</a>
               </p>
               <p class="item-date">
                 <time datetime="2022-08-26T13:13:09.366Z" itemprop="datePublished">2022-08-26</time>
@@ -360,7 +362,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      通过WinDbg调试分析mimikatz wdigest模块
+      通过WinDbg调试看wdigest开启后lsass内存的变化
     </h1>
   
 
@@ -394,7 +396,8 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
         <p><img src="https://s2.loli.net/2022/09/08/61wuRfy4nZWcVrB.png"></p>
-<p>在使用 mimikatz 经常有一个疑惑就是为什么使用简单的命令就可以提取出受 winodws 安全机制保护的密码，而且还是明文，通过这篇文章来简单梳理下其中的工作流程</p>
+<p>我们知道在 win10&#x2F;server2012 及以上版本开启 Wdigest 的情况下通过 mimikatz 是拿不到明文密码的，需要通过注册表开启 wdigest 才能抓到明文密码，本文通过 windbg 调试来看内存中发生了怎样的变化</p>
+<p>在调试之前先来看一下 Windows 凭证机制的基础知识</p>
 <h1 id="Windows凭证机制"><a href="#Windows凭证机制" class="headerlink" title="Windows凭证机制"></a>Windows凭证机制</h1><h2 id="关键基础设施"><a href="#关键基础设施" class="headerlink" title="关键基础设施"></a>关键基础设施</h2><h3 id="SAM文件"><a href="#SAM文件" class="headerlink" title="SAM文件"></a>SAM文件</h3><p>SAM (安全账户管理器)，SAM 用来存储 Windows 操作系统密码的数据库文件，为了避免明文密码泄露，SAM 文件中保存的是明文密码经过一系列算法处理过的 Hash 值，被保存的 Hash 分为 <strong>LM Hash（现已废弃）、NTLMHash（长度32bit由字母数字组成）</strong>。在用户在本地或者远程登陆系统时，会将 Hash 值与 SAM 文件中保存的 Hash 值进行对比。在后期的 Windows 系统中，SAM 文件中被保存的密码 Hash 都被密钥 SYSKEY 加密</p>
 <ul>
 <li>SAM 文件在磁盘中的位置在：C:\windows\system32\config\sam</li>
@@ -418,11 +421,10 @@
 <p>在 win 7 和 2008 r2 及之前都是默认开启 Wdigest 且无法禁用，需要额外安装 KB2871997 补丁禁用 wdigest（但是 WIN7 以及 08 以后的系统中微软都默认禁止了 Wdigest 协议）</p>
 <p>所以在 win10&#x2F;server2012 及以上版本关闭 Wdigest 的情况下，抓密码需要手工修改注册表 + 强制锁屏 + 等待目标系统管理员重新登录 &#x3D; 截取明文密码</p>
 <p>修改注册表的命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLMSYSTEMCurrentControlSetControlSecurityProvidersWDigest /v UseLogonCredential /t REG_DWORD /d 1 /f</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 1 /f</span><br></pre></td></tr></table></figure>
 
 <p>也可以通过 powershell、msf 等修改注册表</p>
 <p>关于 mimikatz 是如何实现 sekurlsa::wdigest 的代码分析可以看这篇文章：<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/235232">调试mimikatz源码：wdigest功能源码调试详细过程及分析</a></p>
-<p>本篇文章重点关注的是通过 windbg 调试分析 mimikatz::wdigest 的实现 </p>
 <h1 id="windbg调试"><a href="#windbg调试" class="headerlink" title="windbg调试"></a>windbg调试</h1><p>Windbg 是微软开发的免费源码级调试工具。Windbg 可以用于 Kernel 模式调试和用户模式调试，还可以调试 Dump 文件</p>
 <p>官方文档及下载地址：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/debugger-download-tools">https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/debugger-download-tools</a></p>
 <p>在调试 windows 时，无法简单地将 WinDBG 附加到 <code>lsass</code> 上，如果这么操作，Windows 会停止运行，警告用户系统即将重启。因此，我们需要 attach 内核，然后从 Ring-0 切换到 <code>lsass </code>进程</p>
@@ -494,13 +496,18 @@
 <p><img src="https://s2.loli.net/2022/09/08/M4z2PwaxrOypDIj.png" alt="截屏2022-09-07 19.58.56"></p>
 </li>
 </ol>
-<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/86928">利用WinDbg本地内核调试器攻陷 Windows 内核</a></p>
-<p>重点：</p>
+<p>在开启 wdigest 前通过 mimikatz 导出密码</p>
+<p><img src="https://s2.loli.net/2022/09/09/RfNX8KFEx1oawvH.jpg" alt="QQ截图20220909135851"></p>
+<p>通过修改注册表开启 UseLogonCredential ，查看内存中的变化</p>
+<p><img src="https://s2.loli.net/2022/09/08/lrVumxJvWwPHGIa.png" alt="截屏2022-09-07 20.38.10"></p>
+<p>锁屏后等待用户重新登录，然后再导密码就是保存的明文密码了</p>
+<p><img src="https://s2.loli.net/2022/09/09/qDBjCwa3XnfQGMy.png" alt="ssss"></p>
+<p>关于 mimikatz wdigest 模块是如何实现可以看以下两篇分析文章：</p>
 <p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/8268">探索Mimikatz-第1部分-WDigest</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/180126">深入分析Mimikatz：WDigest</a></p>
-<p>开启 UseLogonCredential，查看内存中的变化</p>
-<p><img src="https://s2.loli.net/2022/09/08/lrVumxJvWwPHGIa.png" alt="截屏2022-09-07 20.38.10"></p>
-<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/220991">Windows凭证机制</a></p>
+<p>参考链接</p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/220991">Windows凭证机制</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/86928">利用WinDbg本地内核调试器攻陷 Windows 内核</a></p>
 
       
     </div>
@@ -510,7 +517,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/" title="通过WinDbg调试分析mimikatz wdigest模块" target="_blank" rel="external">https://oceansec.github.io/2022/09/07/通过WinDbg调试分析mimikatz wdigest模块/</a>
+      <a href="https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/" title="通过WinDbg调试看wdigest开启后lsass内存的变化" target="_blank" rel="external">https://oceansec.github.io/2022/09/07/通过WinDbg调试分析mimikatz wdigest模块/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -558,7 +565,7 @@
     
     
     <li class="next">
-      <a href="/2022/08/26/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/" title="实习总结"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2022/08/26/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/" title="年中结"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
