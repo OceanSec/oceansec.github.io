@@ -18,8 +18,8 @@
   
   <entry>
     <title>通过WinDbg调试看wdigest开启后lsass内存的变化</title>
-    <link href="https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/"/>
-    <id>https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90mimikatz%20wdigest%E6%A8%A1%E5%9D%97/</id>
+    <link href="https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E7%9C%8Bwdigest%E5%BC%80%E5%90%AF%E5%90%8Elsass%E5%86%85%E5%AD%98%E7%9A%84%E5%8F%98%E5%8C%96/"/>
+    <id>https://oceansec.github.io/2022/09/07/%E9%80%9A%E8%BF%87WinDbg%E8%B0%83%E8%AF%95%E7%9C%8Bwdigest%E5%BC%80%E5%90%AF%E5%90%8Elsass%E5%86%85%E5%AD%98%E7%9A%84%E5%8F%98%E5%8C%96/</id>
     <published>2022-09-07T14:28:12.479Z</published>
     <updated>2022-09-09T06:13:48.921Z</updated>
     
@@ -43,8 +43,8 @@
   
   <entry>
     <title>年中结</title>
-    <link href="https://oceansec.github.io/2022/08/26/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    <id>https://oceansec.github.io/2022/08/26/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/</id>
+    <link href="https://oceansec.github.io/2022/08/26/%E5%B9%B4%E4%B8%AD%E7%BB%93/"/>
+    <id>https://oceansec.github.io/2022/08/26/%E5%B9%B4%E4%B8%AD%E7%BB%93/</id>
     <published>2022-08-26T13:13:09.366Z</published>
     <updated>2022-09-09T06:17:38.432Z</updated>
     
