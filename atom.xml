@@ -6,7 +6,7 @@
   <link href="https://oceansec.github.io/atom.xml" rel="self"/>
   
   <link href="https://oceansec.github.io/"/>
-  <updated>2022-09-15T05:28:32.653Z</updated>
+  <updated>2022-09-19T09:31:09.713Z</updated>
   <id>https://oceansec.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>macos 环境下搭建 windbg 虚拟机双机调试环境</title>
+    <link href="https://oceansec.github.io/2022/09/19/macos%20%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BA%20windbg%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8F%8C%E6%9C%BA%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/"/>
+    <id>https://oceansec.github.io/2022/09/19/macos%20%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BA%20windbg%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8F%8C%E6%9C%BA%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/</id>
+    <published>2022-09-19T09:28:31.245Z</published>
+    <updated>2022-09-19T09:31:09.713Z</updated>
+    
+    <content type="html"><![CDATA[<p>本次使用将在 macos 环境下搭建 windbg 虚拟机双机调试环境，和 windows 调试略有区别，关于 windows 虚拟机双机调试可以看上一篇文章</p><p>实验环境</p><ul><li>物理机：MacBoob+vmfusion 专业版 12.1.0</li><li>调试机：win10 x64+windbg preview </li><li>目标机器（被调试机）：win7 x64</li></ul><p>环境搭建</p><ol><li><p>设置虚拟机串口，首先找到虚拟机所在包</p><p>选择机器右击在 finder 中打开（因为我这里截图按到了 command 键所以变成了打开最新的日志文件）</p><p><img src="https://s2.loli.net/2022/09/19/gtof97WCIwBak3H.png" alt="截屏2022-09-19 11.37.35"></p><p>找到调试机器和目标机器右击显示包内容，找到对应的<code>虚拟机名.vmx</code>文件并打开</p><p><strong>调试机器设置</strong></p><p>删除原有的包含 “serial0 “ 的配置行，替换为以下内容</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">serial0.present = &quot;TRUE&quot;</span><br><span class="line">serial0.fileType = &quot;pipe&quot;</span><br><span class="line">serial0.fileName = &quot;/Users/&#123;name&#125;/com1&quot;</span><br><span class="line">serial0.yieldOnMsrRead = &quot;TRUE&quot;</span><br><span class="line">serial0.tryNoRxLoss = &quot;FALSE&quot;</span><br><span class="line">serial0.pipe.endPoint = &quot;client&quot;</span><br></pre></td></tr></table></figure><p><strong>被调试机器</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">serial0.fileName = &quot;/Users/&#123;name&#125;/com1&quot;</span><br><span class="line">serial0.present = &quot;TRUE&quot;</span><br><span class="line">serial0.fileType = &quot;pipe&quot;</span><br><span class="line">serial0.yieldOnMsrRead = &quot;TRUE&quot;</span><br><span class="line">serial0.startConnected = &quot;TRUE&quot;</span><br></pre></td></tr></table></figure><p>注意：这里 {name} 需要更换为自己的用户名，虚拟机处于关闭或挂起状态才可以修改该配置文件</p></li><li><p><strong>被调试机</strong>设置开启串口，以管理员身份打开 cmd，执行以下命令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /enum ACTIVE</span><br><span class="line">bcdedit /dbgsettings serial baudrate:115200 debugport:1</span><br><span class="line">bcdedit /copy &#123;current&#125; /d &quot;Windows Debug Entry&quot;</span><br><span class="line">bcdedit /displayorder &#123;current&#125; &#123;上一行的id&#125;</span><br><span class="line">bcdedit /debug &#123;上一行的id&#125; ON</span><br><span class="line">bcdedit -set TESTSIGNING on</span><br><span class="line">bcdedit /dbgsettings</span><br></pre></td></tr></table></figure><p><img src="https://s2.loli.net/2022/09/19/Aj1Ecg9BUGki6Wz.png" alt="截屏2022-09-19 12.21.32"></p><p><img src="https://s2.loli.net/2022/09/19/vEcyO8SZbj4NwMm.png" alt="截屏2022-09-19 12.22.58"></p><p>命令执行完毕后，重启系统，开机时出现新的启动项即为正常</p><p><img src="https://s2.loli.net/2022/09/19/qhSVdgQr1Uub7ik.png" alt="截屏2022-09-19 16.50.36"></p></li><li><p><strong>调试机器设置</strong></p><p>计算机管理 -&gt; 设备管理器 -&gt; 端口 -&gt; 通信端口 -&gt; 端口设置</p><p>设置位&#x2F;秒为 115200</p><p><img src="https://s2.loli.net/2022/09/19/6JgjO4nqAdCHe2k.png" alt="截屏2022-09-19 12.27.19"></p></li><li><p>打开 windbg preview</p><p>attach to kernel</p><p><img src="https://s2.loli.net/2022/09/19/Ebj38mir4uMdft7.png" alt="截屏2022-09-19 12.29.59"></p><p>注意此时被调试机处于开机选择启动项界面，选择 windows debug entry</p><p><img src="https://s2.loli.net/2022/09/19/ydc5WoN3LGtT6hO.png" alt="截屏2022-09-19 16.52.26"></p></li></ol><p>之后就可以愉快的调试了</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;本次使用将在 macos 环境下搭建 windbg 虚拟机双机调试环境，和 windows 调试略有区别，关于 windows 虚拟机双机调试可以看上一篇文章&lt;/p&gt;
+&lt;p&gt;实验环境&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;物理机：MacBoob+vmfusion 专业版 12.1.0&lt;</summary>
+      
+    
+    
+    
+    <category term="内网" scheme="https://oceansec.github.io/categories/%E5%86%85%E7%BD%91/"/>
+    
+    
+    <category term="环境搭建,调试" scheme="https://oceansec.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>邮件钓鱼小总结</title>
