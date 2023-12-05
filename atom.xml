@@ -6,7 +6,7 @@
   <link href="https://oceansec.github.io/atom.xml" rel="self"/>
   
   <link href="https://oceansec.github.io/"/>
-  <updated>2023-12-05T03:55:06.360Z</updated>
+  <updated>2023-12-05T03:13:03.188Z</updated>
   <id>https://oceansec.github.io/</id>
   
   <author>
@@ -15,27 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>测试文档</title>
-    <link href="https://oceansec.github.io/2023/12/05/%E6%B5%8B%E8%AF%95%E6%96%87%E6%A1%A3/"/>
-    <id>https://oceansec.github.io/2023/12/05/%E6%B5%8B%E8%AF%95%E6%96%87%E6%A1%A3/</id>
-    <published>2023-12-05T03:54:01.000Z</published>
-    <updated>2023-12-05T03:55:06.360Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/2023/12/05/%E6%B5%8B%E8%AF%95%E6%96%87%E6%A1%A3/image-20231205115412298.png" alt="image-20231205115412298"></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;/2023/12/05/%E6%B5%8B%E8%AF%95%E6%96%87%E6%A1%A3/image-20231205115412298.png&quot; alt=&quot;image-20231205115412298&quot;&gt;&lt;/p&gt;
-</summary>
-      
-    
-    
-    
-    
-  </entry>
   
   <entry>
     <title>初见codeql</title>
