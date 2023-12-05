@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>初见codeql | Ocean&#39;s Blog</title>
+  <meta name="description" content="安装CodeQLCodeQL本身包含两部分解析引擎+SDK  下载已经编译好的 CodeQL 执行程序 https:&#x2F;&#x2F;github.com&#x2F;github&#x2F;codeql-cli-binaries&#x2F;releases 下载之后配置环境变量  安装 SDK CMD 进入 CodeQL 安装目录，使用 Git 安装 SDK 1git clone https:&#x2F;&#x2F;github.com&#x2F;Semmle&#x2F;ql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初见codeql">
+<meta property="og:url" content="https://oceansec.github.io/2023/12/05/%E5%88%9D%E8%A7%81codeql/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="安装CodeQLCodeQL本身包含两部分解析引擎+SDK  下载已经编译好的 CodeQL 执行程序 https:&#x2F;&#x2F;github.com&#x2F;github&#x2F;codeql-cli-binaries&#x2F;releases 下载之后配置环境变量  安装 SDK CMD 进入 CodeQL 安装目录，使用 Git 安装 SDK 1git clone https:&#x2F;&#x2F;github.com&#x2F;Semmle&#x2F;ql">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204104312841.png">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204104429485.png">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204143940460.png">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204143925694.png">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204144132690.png">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204144926981.png">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204174207054.png">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204174521388.png">
+<meta property="og:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231205100612615.png">
+<meta property="article:published_time" content="2023-12-05T03:10:27.000Z">
+<meta property="article:modified_time" content="2023-12-05T03:13:03.188Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oceansec.github.io/%E5%88%9D%E8%A7%81codeql/image-20231204104312841.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://oceansec.github.io/2023/12/05/%E5%88%9D%E8%A7%81codeql/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/oceansec" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Ocean</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Security researcher</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RedTeam/">RedTeam</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E7%BD%91/">内网</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%92%93%E9%B1%BC/">钓鱼</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CISCN-wp/" rel="tag">CISCN,wp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-mimikatz/" rel="tag">windows,mimikatz</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%8B%E7%BB%8D/" rel="tag">介绍</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="tag">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" rel="tag">环境搭建,调试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%92%93%E9%B1%BC/" rel="tag">钓鱼</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" rel="tag">靶场,Redteam,内网</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" rel="tag">黑苹果</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CISCN-wp/" style="font-size: 13px;">CISCN,wp</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/windows-mimikatz/" style="font-size: 13px;">windows,mimikatz</a> <a href="/tags/%E4%BB%8B%E7%BB%8D/" style="font-size: 13px;">介绍</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 13px;">博客搭建</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 13px;">总结</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" style="font-size: 13px;">环境搭建,调试</a> <a href="/tags/%E9%92%93%E9%B1%BC/" style="font-size: 13px;">钓鱼</a> <a href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" style="font-size: 13px;">靶场,Redteam,内网</a> <a href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" style="font-size: 14px;">黑苹果</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/" class="title">初见codeql</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T03:10:27.000Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" class="title">邮件钓鱼小总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.866Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RedTeam/">RedTeam</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" class="title">漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.864Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/" class="title">机械革命z2黑苹果双系统改造计划</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.862Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%96%B0%E5%8D%9A%E5%AE%A2%E4%BB%8B%E7%BB%8D%EF%BC%8C%E6%97%A7%E5%8D%9A%E5%AE%A2%E5%9C%B0%E5%9D%80%EF%BC%9Aoceansec.blog.csdn.net/" class="title">新博客介绍，旧博客地址：https://oceansec.blog.csdn.net</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.860Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-初见codeql" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      初见codeql
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/" class="article-date">
+	  <time datetime="2023-12-05T03:10:27.000Z" itemprop="datePublished">2023-12-05</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="安装CodeQL"><a href="#安装CodeQL" class="headerlink" title="安装CodeQL"></a>安装CodeQL</h2><p>CodeQL本身包含两部分解析引擎+<code>SDK</code></p>
+<ol>
+<li><p>下载已经编译好的 CodeQL 执行程序</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/github/codeql-cli-binaries/releases">https://github.com/github/codeql-cli-binaries/releases</a></p>
+<p>下载之后配置环境变量</p>
+</li>
+<li><p>安装 SDK</p>
+<p>CMD 进入 CodeQL 安装目录，使用 Git 安装 SDK</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/Semmle/ql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 VS Code 插件，在应用商店搜索 CodeQL，安装第一个</p>
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231204104312841.png" alt="image-20231204104312841"></p>
+</li>
+<li><p>安装之后配置 CodeQL 目录</p>
+<p>点击插件右侧齿轮按钮，填入 CodeQL 的安装目录，路径中需要到 codeql.exe（下图没有会有bug）</p>
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231204104429485.png" alt="image-20231204104429485"></p>
+</li>
+<li><p>因为审计 Java 代码还需要用到 maven，需要安装 MVN</p>
+<p>直接在官网下载：<a target="_blank" rel="noopener" href="https://maven.apache.org/download.cgi%EF%BC%8C%E9%85%8D%E7%BD%AE%E5%A5%BD%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8D%B3%E5%8F%AF%EF%BC%8C%E5%9C%A8">https://maven.apache.org/download.cgi，配置好环境变量即可，在</a> Windows 系统语言为中文的情况下，可能会出现报错中文乱码</p>
+</li>
+</ol>
+<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><p>由于<code>CodeQL</code>的处理对象并不是源码本身，而是中间生成的AST结构数据库，所以我们先需要把我们的项目源码转换成<code>CodeQL</code>能够识别的<code>CodeDatabase</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codeql database create ../codeqldatabase  --language=<span class="string">&quot;java&quot;</span>  --<span class="built_in">command</span>=<span class="string">&quot;mvn clean install --file pom.xml&quot;</span> --source-root=C:\Users\admin\Downloads\micro_service_seclab-main</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231204143940460.png" alt="image-20231204143940460"></p>
+<p>导入 Database</p>
+<p>在 vscode 中导入解析完成的数据库</p>
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231204143925694.png" alt="image-20231204143925694"></p>
+<p>数据库加载成功</p>
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231204144132690.png" alt="image-20231204144132690"></p>
+<p>编写测试 QL 查询，在 vscode 中打开 SDK 所在文件夹，如图所示目录新建 ql 文件，右击 run query 进行查询</p>
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231204144926981.png" alt="image-20231204144926981"></p>
+<h2 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h2><p>CodeQL 的核心引擎是不开源的，这个核心引擎的作用之一是帮助我们把要审计的代码文件转换成CodeQL能识别的中间层 AST 数据库，然后我们需要编写 QL 查询语句来获取我们想要的数据，由于 CodeQL 开源了所有的规则和规则库部分，所以我们能够做的就是编写符合我们业务逻辑的 QL 规则，然后使用 CodeQL 引擎去跑我们的规则，发现靶场的安全漏洞</p>
+<blockquote>
+<p>什么是source和sink</p>
+<p>在代码自动化安全审计的理论当中，有一个最核心的三元组概念，就是(source，sink和sanitizer)</p>
+<ul>
+<li>source是指漏洞污染链条的输入点。比如获取http请求的参数部分，就是非常明显的Source</li>
+<li>sink是指漏洞污染链条的执行点，比如SQL注入漏洞，最终执行SQL语句的函数就是sink(这个函数可能叫query或者exeSql，或者其它)</li>
+<li>sanitizer又叫净化函数，是指在整个的漏洞链条当中，如果存在一个方法阻断了整个传递链，那么这个方法就叫sanitizer</li>
+</ul>
+</blockquote>
+<p>只有当 source 和 sink 同时存在，并且从 source 到 sink 的链路是通的，才表示当前漏洞是存在的</p>
+<p>具体语法可以学习：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/283795.html">CodeQL从入门到放弃</a></p>
+<h2 id="CodeQLpy"><a href="#CodeQLpy" class="headerlink" title="CodeQLpy"></a>CodeQLpy</h2><p><a target="_blank" rel="noopener" href="https://github.com/webraybtl/CodeQLpy">CodeQLpy</a> 是一款基于 CodeQL 实现的自动化代码审计工具，目前仅支持java语言，后期会增加对其他语言的支持，支持对多种不同类型的java代码进行代码审计，包括jsp文件、SpringMVC的war包、SpringBoot的jar包、maven源代码</p>
+<p>安装 CodeQL 之后，把 python 文件放到 CodeQL 目录下，安装依赖库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -r requirements.txt</span><br></pre></td></tr></table></figure>
+
+<p>然后需要进入config目录下修改ini配置，有空格需要加上引号</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[codeql]</span></span><br><span class="line"><span class="attr">qlpath</span> = D:\_Tools\My_Safe_Tools\codeql\ql\java\ql\test</span><br><span class="line"><span class="attr">jdk8</span> = <span class="string">&quot;C:\Program Files\Java\jdk1.8.0_152\bin\java.exe&quot;</span></span><br><span class="line"><span class="attr">jdk11</span> = <span class="string">&quot;C:\Program Files\Java\jdk-11\bin\java.exe&quot;</span></span><br><span class="line"><span class="attr">idea_decode_tool</span> = lib/java-decompiler.jar</span><br><span class="line"><span class="attr">jd_decode_tool</span>  = lib/jd-cli.jar</span><br><span class="line"><span class="attr">jsp_decode_tool</span> = lib/jsp2class.jar</span><br><span class="line"><span class="attr">ecj_tool</span> = lib/ecj-<span class="number">4.6</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="attr">tomcat_jar</span> = lib/tomcat_lib</span><br><span class="line"><span class="attr">spring_boot_jar</span> = lib/spring_boot_lib</span><br><span class="line"><span class="attr">decode_savedir</span> = out/decode/</span><br><span class="line"><span class="attr">general_dbpath</span> = out/database/</span><br><span class="line"><span class="attr">maven_savedir</span>  = out/mvn/</span><br><span class="line"><span class="attr">decompile_type</span> = jd</span><br><span class="line"><span class="attr">debug</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">model</span> = fast</span><br><span class="line"><span class="attr">thread_num</span> = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="section">[log]</span></span><br><span class="line"><span class="attr">path</span> = out/log/</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>生成数据库初始化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// -c 选项不加默认扫描java文件，加上即扫描class文件</span><br><span class="line">// -t参数表示目标源码的路径，支持的源码类型是文件夹，jar包和war包</span><br><span class="line">python3 main.py -t 指向要审计的项目</span><br></pre></td></tr></table></figure>
+
+<p>运行之后，会在最后提示下一步要执行的命令</p>
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231204174207054.png" alt="image-20231204174207054"></p>
+</li>
+<li><p>生成数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># windows</span></span><br><span class="line">codeql database create out/database/micro_service_seclab-main --language=java --source-root=<span class="string">&quot;C:\Users\admin\Downloads\micro_service_seclab-main&quot;</span> --<span class="built_in">command</span>=<span class="string">&quot;D:\_Tools\My_Safe_Tools\codeql\CodeQLpy-master\out\decode/run.cmd&quot;</span> --overwrite</span><br><span class="line"><span class="comment"># linux</span></span><br><span class="line">codeql database create out/database/SecExample-main --language=java --<span class="built_in">command</span>=<span class="string">&quot;/bin/bash -c /Users/xxx/CodeQLpy/out/decode/run.sh&quot;</span> --overwrite</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231204174521388.png" alt="image-20231204174521388"></p>
+<p>运行之后生成数据库，如果有错请忽略，最终只要看到 Successfully created database 就可以</p>
+</li>
+<li><p>最后查询漏洞</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py -d out/database/micro_service_seclab-main</span><br></pre></td></tr></table></figure>
+
+<p>运行之后程序会使用自带的查询 ql 语句进行漏洞扫描，完成之后会自动生成 csv 文件</p>
+<p><img src="/%E5%88%9D%E8%A7%81codeql/image-20231205100612615.png" alt="image-20231205100612615"></p>
+</li>
+</ol>
+<p>开源项目</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ZhuriLab/Yi">项目监控工具 以及 Codeql 自动运行</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/webraybtl/CodeQLpy">CodeQLpy</a></li>
+</ul>
+<p>参考文章</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/283795.html">CodeQL从入门到放弃</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/iW7EGEAylqcltYgGo_KdvA">CodeQL与XRay联动实现黑白盒双重校验</a></li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://oceansec.github.io/2023/12/05/%E5%88%9D%E8%A7%81codeql/" title="初见codeql" target="_blank" rel="external">https://oceansec.github.io/2023/12/05/初见codeql/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/oceansec" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/oceansec" target="_blank"><span class="text-dark">Ocean</span><small class="ml-1x">Security researcher</small></a></h3>
+        <div>知其黑，守其白</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" title="邮件钓鱼小总结"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

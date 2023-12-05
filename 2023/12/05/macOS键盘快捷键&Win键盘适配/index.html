@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>机械革命z2黑苹果改造计划第三番-macOS键盘快捷键&amp;Win键盘适配 | Ocean&#39;s Blog</title>
+  <meta name="description" content="macOS键盘快捷键&amp;Win键盘适配键盘区别首先下图是苹果妙控键盘无指纹版，官网售价699，穷学生的我是真的买不起  然后下图是我正在使用的机械键盘ikbc w200 87键版本  可以看出两者在键位排列上的区别主要在于 win&#x2F;command 键，在macOS中大多数快捷键由 command + 其他键组成，等同于使用win键盘的 win + 其他键位，苹果键盘的option">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机械革命z2黑苹果改造计划第三番-macOS键盘快捷键&amp;Win键盘适配">
+<meta property="og:url" content="https://oceansec.github.io/2023/12/05/macOS%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE&Win%E9%94%AE%E7%9B%98%E9%80%82%E9%85%8D/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="macOS键盘快捷键&amp;Win键盘适配键盘区别首先下图是苹果妙控键盘无指纹版，官网售价699，穷学生的我是真的买不起  然后下图是我正在使用的机械键盘ikbc w200 87键版本  可以看出两者在键位排列上的区别主要在于 win&#x2F;command 键，在macOS中大多数快捷键由 command + 其他键组成，等同于使用win键盘的 win + 其他键位，苹果键盘的option">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/9e2650d2eea947c39aeca1dbc790e72b.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c22f74bc478a76bda1b4a64997bca02b.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/bc11205ab71eb2df4fdd3a20344f54ea.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/8d5dc4701ce18e050bb5b2bf6e7698f6.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/7fcebca2a5cf61d8bffeadd54627e87a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/122dc510f8eb792be8029f260e9489a7.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/ea467c86b1f925b4bbf8e10866287323.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/a2f8e34dc109445eb05ee5f1126aa780.png">
+<meta property="article:published_time" content="2023-12-05T02:59:04.848Z">
+<meta property="article:modified_time" content="2023-02-20T10:55:21.700Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="黑苹果">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/9e2650d2eea947c39aeca1dbc790e72b.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://oceansec.github.io/2023/12/05/macOS%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE&Win%E9%94%AE%E7%9B%98%E9%80%82%E9%85%8D/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/oceansec" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Ocean</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Security researcher</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RedTeam/">RedTeam</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E7%BD%91/">内网</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%92%93%E9%B1%BC/">钓鱼</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CISCN-wp/" rel="tag">CISCN,wp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-mimikatz/" rel="tag">windows,mimikatz</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%8B%E7%BB%8D/" rel="tag">介绍</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="tag">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" rel="tag">环境搭建,调试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%92%93%E9%B1%BC/" rel="tag">钓鱼</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" rel="tag">靶场,Redteam,内网</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" rel="tag">黑苹果</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CISCN-wp/" style="font-size: 13px;">CISCN,wp</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/windows-mimikatz/" style="font-size: 13px;">windows,mimikatz</a> <a href="/tags/%E4%BB%8B%E7%BB%8D/" style="font-size: 13px;">介绍</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 13px;">博客搭建</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 13px;">总结</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" style="font-size: 13px;">环境搭建,调试</a> <a href="/tags/%E9%92%93%E9%B1%BC/" style="font-size: 13px;">钓鱼</a> <a href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" style="font-size: 13px;">靶场,Redteam,内网</a> <a href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" style="font-size: 14px;">黑苹果</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/" class="title">初见codeql</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T03:10:27.000Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" class="title">邮件钓鱼小总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.866Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RedTeam/">RedTeam</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" class="title">漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.864Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/" class="title">机械革命z2黑苹果双系统改造计划</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.862Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%96%B0%E5%8D%9A%E5%AE%A2%E4%BB%8B%E7%BB%8D%EF%BC%8C%E6%97%A7%E5%8D%9A%E5%AE%A2%E5%9C%B0%E5%9D%80%EF%BC%9Aoceansec.blog.csdn.net/" class="title">新博客介绍，旧博客地址：https://oceansec.blog.csdn.net</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.860Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-macOS键盘快捷键&amp;Win键盘适配" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      机械革命z2黑苹果改造计划第三番-macOS键盘快捷键&amp;Win键盘适配
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/12/05/macOS%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE&Win%E9%94%AE%E7%9B%98%E9%80%82%E9%85%8D/" class="article-date">
+	  <time datetime="2023-12-05T02:59:04.848Z" itemprop="datePublished">2023-12-05</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" rel="tag">黑苹果</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/12/05/macOS%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE&Win%E9%94%AE%E7%9B%98%E9%80%82%E9%85%8D/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><img src="https://img-blog.csdnimg.cn/9e2650d2eea947c39aeca1dbc790e72b.png" alt="在这里插入图片描述"></p>
+<h1 id="macOS键盘快捷键-amp-Win键盘适配"><a href="#macOS键盘快捷键-amp-Win键盘适配" class="headerlink" title="macOS键盘快捷键&amp;Win键盘适配"></a>macOS键盘快捷键&amp;Win键盘适配</h1><h2 id="键盘区别"><a href="#键盘区别" class="headerlink" title="键盘区别"></a>键盘区别</h2><p>首先下图是苹果妙控键盘无指纹版，官网售价699，穷学生的我是真的买不起</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/c22f74bc478a76bda1b4a64997bca02b.png" alt="截屏2023-02-15 15.08.36"></p>
+<p>然后下图是我正在使用的机械键盘ikbc w200 87键版本</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/bc11205ab71eb2df4fdd3a20344f54ea.png" alt="截屏2023-02-15 15.20.21"></p>
+<p>可以看出两者在键位排列上的区别主要在于 win&#x2F;command 键，在macOS中大多数快捷键由 command + 其他键组成，等同于使用win键盘的 win + 其他键位，苹果键盘的option就是win键盘的Alt</p>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>苹果官网也给出了文档：<a target="_blank" rel="noopener" href="https://support.apple.com/zh-cn/HT201236">链接</a></p>
+<p>接下来介绍一些macOS的实用快捷键，其实很多快捷键和Windows一样</p>
+<ol>
+<li>command + c：复制 +v 粘贴，注意macOS中没有文件剪切command + x只能用于文字剪切</li>
+<li>先command + c 复制文件，然后 option + command + v 移动文件</li>
+<li>command + 空格：显示或隐藏「聚焦」搜索栏，用过utools的都知道啦，在macOS中也有utools类似工具如：alfred、hapigo</li>
+<li>command + shift + 3&#x2F;4&#x2F;5分别代表：全屏&#x2F;区域&#x2F;窗口截屏，同时按 ctrl 可以将截图保存为剪贴板（确实难按的过来）</li>
+<li>command + q：退出应用，option + command + esc：强制结束进程</li>
+<li>command + m：当前窗口最小化至程序坞，command + h 隐藏程序</li>
+<li>在macos中选中文件按Enter并不能打开而是重命名</li>
+<li>command + shift + n：新建文件夹</li>
+<li>command + d：复制（win中ctrl+d为删除文件）</li>
+<li>command + delete：删除文件</li>
+<li>Command + 上箭头：打开包含当前文件夹的文件夹<br>Command + 下箭头：打开所选项</li>
+<li>command + 左箭头：文件编辑时移至行首，右箭头移至行尾</li>
+<li>command + F7&#x2F;F8：音量加减</li>
+<li>scrlk：减少屏幕亮度，pasue：增加屏幕亮度</li>
+<li>caps：中英文切换，按住shift大写</li>
+<li>在文件、图片、视频等一些文件选中按空格键可以快速预览，俗称「一指禅」</li>
+</ol>
+<p><strong>mac终端光标移动的快捷键</strong></p>
+<ul>
+<li>将光标移动到行首：control + a</li>
+<li>将光标移动到行尾：control + e</li>
+<li>清除屏幕：control + l</li>
+<li>搜索以前使用命令：control + r</li>
+<li>清除当前行：control + u</li>
+</ul>
+<h2 id="键盘设置"><a href="#键盘设置" class="headerlink" title="键盘设置"></a>键盘设置</h2><p>在mac键盘中command键紧挨着空格左边，Windows键盘则是中间加了个alt键，不适应的macOS中可以修改：</p>
+<p>系统偏好设置-键盘-更改键盘类型</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/8d5dc4701ce18e050bb5b2bf6e7698f6.png" alt="截屏2023-02-15 17.54.58"></p>
+<h2 id="鼠标设置"><a href="#鼠标设置" class="headerlink" title="鼠标设置"></a>鼠标设置</h2><p>还有就是鼠标滚轮方向和Windows是反着的，这点macOS是和触控板一样的，模拟手指滑动，mac的妙控鼠标也是触控的，如果不用触控板的话可以在设置中修改：</p>
+<p>系统偏好设置-鼠标-自然滚动取消</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/7fcebca2a5cf61d8bffeadd54627e87a.png" alt="截屏2023-02-15 17.58.32"></p>
+<p>不过有一说一Mac的触控板是真的好用，闲鱼上有二手的妙控鼠标2代在200左右，二手的magic trackpad 1代在250左右，二代都在400左右，真的好贵，还是乖乖用的自己键鼠吧</p>
+<p>因为经常要用到终端，可以将终端添加到访达的服务中，这样在文件夹右击就可以打开终端，十分的方便</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/122dc510f8eb792be8029f260e9489a7.png" alt="image-20230215180725792"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ea467c86b1f925b4bbf8e10866287323.png" alt="截屏2023-02-15 18.04.58"><br><img src="https://img-blog.csdnimg.cn/a2f8e34dc109445eb05ee5f1126aa780.png" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://oceansec.github.io/2023/12/05/macOS%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE&Win%E9%94%AE%E7%9B%98%E9%80%82%E9%85%8D/" title="机械革命z2黑苹果改造计划第三番-macOS键盘快捷键&amp;Win键盘适配" target="_blank" rel="external">https://oceansec.github.io/2023/12/05/macOS键盘快捷键&Win键盘适配/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/oceansec" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/oceansec" target="_blank"><span class="text-dark">Ocean</span><small class="ml-1x">Security researcher</small></a></h3>
+        <div>知其黑，守其白</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/12/05/Windows%20MSDT%20RCE(CVE-2022-30190)%E5%A4%8D%E7%8E%B0/" title="Windows MSDT RCE(CVE-2022-30190)复现"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/12/05/macos%20%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BA%20windbg%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8F%8C%E6%9C%BA%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/" title="macos 环境下搭建 windbg 虚拟机双机调试环境"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

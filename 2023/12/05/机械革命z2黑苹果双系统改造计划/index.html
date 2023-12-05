@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>机械革命z2黑苹果双系统改造计划 | Ocean&#39;s Blog</title>
+  <meta name="description" content="机械革命z2黑苹果改造计划 原来的系统硬盘才256G实在太小了，趁固态便宜搞了一块大华C900Plus-b 1T固态，加上之前电脑里后加的一块海康威视c2000pro 1T准备搞一个win+mac双系统生产力工具 黑苹果效果展示  黑苹果的详细教程b站上有很多，也可以看下国光师傅的博客，https:&#x2F;&#x2F;apple.sqlsec.com&#x2F;，有文字和视频教程，对于黑苹果引导efi有非常详细的介绍 当然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机械革命z2黑苹果双系统改造计划">
+<meta property="og:url" content="https://oceansec.github.io/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="机械革命z2黑苹果改造计划 原来的系统硬盘才256G实在太小了，趁固态便宜搞了一块大华C900Plus-b 1T固态，加上之前电脑里后加的一块海康威视c2000pro 1T准备搞一个win+mac双系统生产力工具 黑苹果效果展示  黑苹果的详细教程b站上有很多，也可以看下国光师傅的博客，https:&#x2F;&#x2F;apple.sqlsec.com&#x2F;，有文字和视频教程，对于黑苹果引导efi有非常详细的介绍 当然">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/8ba3e95f30711a4d9397800037e6777e.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/386740a945a342d7a0c4a8fd1fd101cd.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/bc7b8daf21c24323bf6e4dca86885c0a.gif">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/9ad60f05117a29c0a0a16f05ec875051.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1af2b4beb21aa09f39601d785eef1cfe.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/074a960b63eaf659579eb9c2bdb95bf2.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/51db9608d7f9b7af172dcfbfeafb4b9e.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/39fe83c8947ef09252518fa2f3a532f0.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1b8f54875b8d1cd85e70df10b955e558.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d2f05fcfb1409bb7869aa10579f6c7dd.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/2f414769a83f91fcb91cf6937d4a7928.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/2a966fbc8c5b868c83e7491319536e20.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/ee78ddeae0e4cd7e0868ec861ba81ee7.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a70b1898ac0eb0ddd0c42d7090af038d.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/205d0651d48765672d5d09bd5fde2245.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/8e71e0c0936863e3e6f915a5b7d7f5ca.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6af074c49a8e4c2ea4913845183d1d70.png">
+<meta property="article:published_time" content="2023-12-05T02:59:04.862Z">
+<meta property="article:modified_time" content="2023-02-14T02:44:20.820Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="黑苹果">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/8ba3e95f30711a4d9397800037e6777e.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://oceansec.github.io/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/oceansec" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Ocean</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Security researcher</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RedTeam/">RedTeam</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E7%BD%91/">内网</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%92%93%E9%B1%BC/">钓鱼</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CISCN-wp/" rel="tag">CISCN,wp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-mimikatz/" rel="tag">windows,mimikatz</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%8B%E7%BB%8D/" rel="tag">介绍</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="tag">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" rel="tag">环境搭建,调试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%92%93%E9%B1%BC/" rel="tag">钓鱼</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" rel="tag">靶场,Redteam,内网</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" rel="tag">黑苹果</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CISCN-wp/" style="font-size: 13px;">CISCN,wp</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/windows-mimikatz/" style="font-size: 13px;">windows,mimikatz</a> <a href="/tags/%E4%BB%8B%E7%BB%8D/" style="font-size: 13px;">介绍</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 13px;">博客搭建</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 13px;">总结</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" style="font-size: 13px;">环境搭建,调试</a> <a href="/tags/%E9%92%93%E9%B1%BC/" style="font-size: 13px;">钓鱼</a> <a href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" style="font-size: 13px;">靶场,Redteam,内网</a> <a href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" style="font-size: 14px;">黑苹果</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/" class="title">初见codeql</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T03:10:27.000Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" class="title">邮件钓鱼小总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.866Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RedTeam/">RedTeam</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" class="title">漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.864Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/" class="title">机械革命z2黑苹果双系统改造计划</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.862Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%96%B0%E5%8D%9A%E5%AE%A2%E4%BB%8B%E7%BB%8D%EF%BC%8C%E6%97%A7%E5%8D%9A%E5%AE%A2%E5%9C%B0%E5%9D%80%EF%BC%9Aoceansec.blog.csdn.net/" class="title">新博客介绍，旧博客地址：https://oceansec.blog.csdn.net</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.860Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-机械革命z2黑苹果双系统改造计划" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      机械革命z2黑苹果双系统改造计划
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/" class="article-date">
+	  <time datetime="2023-12-05T02:59:04.862Z" itemprop="datePublished">2023-12-05</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" rel="tag">黑苹果</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><img src="https://img-blog.csdnimg.cn/img_convert/8ba3e95f30711a4d9397800037e6777e.png"><br>机械革命z2黑苹果改造计划</p>
+<p>原来的系统硬盘才256G实在太小了，趁固态便宜搞了一块大华C900Plus-b 1T固态，加上之前电脑里后加的一块海康威视c2000pro 1T准备搞一个win+mac双系统生产力工具</p>
+<h1 id="黑苹果效果展示"><a href="#黑苹果效果展示" class="headerlink" title="黑苹果效果展示"></a>黑苹果效果展示</h1><p><img src="https://img-blog.csdnimg.cn/386740a945a342d7a0c4a8fd1fd101cd.png" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/bc7b8daf21c24323bf6e4dca86885c0a.gif" alt="在这里插入图片描述"></p>
+<p>黑苹果的详细教程b站上有很多，也可以看下国光师傅的博客，<a target="_blank" rel="noopener" href="https://apple.sqlsec.com/%EF%BC%8C%E6%9C%89%E6%96%87%E5%AD%97%E5%92%8C%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B%EF%BC%8C%E5%AF%B9%E4%BA%8E%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%BC%95%E5%AF%BCefi%E6%9C%89%E9%9D%9E%E5%B8%B8%E8%AF%A6%E7%BB%86%E7%9A%84%E4%BB%8B%E7%BB%8D">https://apple.sqlsec.com/，有文字和视频教程，对于黑苹果引导efi有非常详细的介绍</a></p>
+<p>当然网上也有大神提供了适配好efi的直装镜像，<a target="_blank" rel="noopener" href="https://www.cmbs-soft.com/%EF%BC%8C%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%E6%8F%90%E4%BE%9B%E9%92%88%E5%AF%B9%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BD%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%94%B5%E8%84%91%E7%9A%84efi%E5%BC%95%E5%AF%BC%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%B4%E8%A3%85%E9%95%9C%E5%83%8F">https://www.cmbs-soft.com/，这个网站提供针对机械革命系列笔记本电脑的efi引导文件和直装镜像</a></p>
+<h1 id="直装镜像的黑苹果安装步骤"><a href="#直装镜像的黑苹果安装步骤" class="headerlink" title="直装镜像的黑苹果安装步骤"></a>直装镜像的黑苹果安装步骤</h1><p>以下步骤双硬盘windows+macos系统，即为一个硬盘安装windows一个硬盘安装macOS，这样可以保证一个系统出现问题时另外一个系统的稳定性。单硬盘双系统也大同小异</p>
+<h2 id="1-写入U盘使用将镜像写入U盘"><a href="#1-写入U盘使用将镜像写入U盘" class="headerlink" title="1.写入U盘使用将镜像写入U盘"></a>1.写入U盘使用将镜像写入U盘</h2><p>U盘必须大于等于16G，保证稳定性请尽量不要使用2.0或水货盘</p>
+<p>其实镜像写入U盘工具有很多可以根据自己现在的电脑系统做选择，想装黑苹果的小伙伴大概用的都是windows吧，可选工具及下载列表如下：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.acutesystems.com/scrtm.htm">transmac</a>，<a target="_blank" rel="noopener" href="https://www.mfpud.com/topics/940/">刻录教程</a>（我用的这个工具一次成功）</li>
+<li><a target="_blank" rel="noopener" href="https://balenaetcher.en.softonic.com/">balenetcher</a>，<a target="_blank" rel="noopener" href="https://apple.sqlsec.com/2-U%E7%9B%98%E5%88%B6%E4%BD%9C/2-2/">刻录教程</a>（我自己windows11真实体验写入u盘10多次没有一次成功，优点就是跨平台）</li>
+<li><a target="_blank" rel="noopener" href="https://rufus.ie/zh/">rufus</a></li>
+</ul>
+<h2 id="2-将BIOS中Secureboot关闭后从U盘启动"><a href="#2-将BIOS中Secureboot关闭后从U盘启动" class="headerlink" title="2.将BIOS中Secureboot关闭后从U盘启动"></a>2.将BIOS中Secureboot关闭后从U盘启动</h2><p>这个可以在重启时按相应的快捷键进入bios，机械革命系列可以按F10，在bios找到secureboot关闭，保存后退出</p>
+<p>因为插了u盘，bios保存开机后会有选择启动项的界面，类似下图界面吧，如果有opencore可以直接选择，没有可以选择u盘名称的UEFI OS的第一个就是opencore分区</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/9ad60f05117a29c0a0a16f05ec875051.png" alt="截屏2023-02-13 16.25.30"></p>
+<p>选择后可以进入opencore界面</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1af2b4beb21aa09f39601d785eef1cfe.png" alt="截屏2023-02-13 16.29.16"></p>
+<h2 id="3-在磁盘工具中抹除预留的安装分区或磁盘"><a href="#3-在磁盘工具中抹除预留的安装分区或磁盘" class="headerlink" title="3.在磁盘工具中抹除预留的安装分区或磁盘"></a>3.在磁盘工具中抹除预留的安装分区或磁盘</h2><p><img src="https://img-blog.csdnimg.cn/img_convert/074a960b63eaf659579eb9c2bdb95bf2.png" alt="img"></p>
+<p>选择要安装macos系统的硬盘或分区，点击右上角的抹除</p>
+<ol>
+<li>选择硬盘的话也就是将macos安装于单独的硬盘，适用于双硬盘双系统或只黑苹果</li>
+<li>选择分区的话也就是单硬盘安装双系统，磁盘划分可以参考<a target="_blank" rel="noopener" href="https://apple.sqlsec.com/5-%E5%AE%9E%E6%88%98%E6%BC%94%E7%A4%BA/5-5/">国光师傅教程</a></li>
+</ol>
+<p>下图为选择分区情况，选择硬盘时多一个“分区”选择项，选择：GUID分区图</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/51db9608d7f9b7af172dcfbfeafb4b9e.jpeg" alt="img"></p>
+<p>名字随意，格式需要选择macos系统格式APFS，APFS类似于windows的NTFS格式，这里需要注意的是mac不能读取NTFS格式的u盘，u盘可以格式化为exFAT确保跨双系统正常使用</p>
+<p>抹初后退出磁盘工具</p>
+<h2 id="4-选择安装MACOS"><a href="#4-选择安装MACOS" class="headerlink" title="4.选择安装MACOS"></a>4.选择安装MACOS</h2><p>接下来就是正常的macos安装过程，选择刚才抹除的磁盘，图形化安装即可，安装过程中系统会多次重启</p>
+<h2 id="5-安装完成后使用DiskGenius和EasyUEFI将引导转移至本地"><a href="#5-安装完成后使用DiskGenius和EasyUEFI将引导转移至本地" class="headerlink" title="5.安装完成后使用DiskGenius和EasyUEFI将引导转移至本地"></a>5.安装完成后使用DiskGenius和EasyUEFI将引导转移至本地</h2><p>做完上一步，系统就可以正常使用了，因为现在macos是u盘引导启动的，接下来要做的就是把引导复制到固态硬盘中，这一步可以在Windows进行也可以在macos中进行，Windows可以使用Disk Genius，macos可以用<a target="_blank" rel="noopener" href="https://macdownload.informer.com/opencore-configurator/download/">occ（opencore-configurator）</a></p>
+<p>打开之后，选择右上角的 OCC 图标，点击，找到自己的安装系统的硬盘，点击”挂载分区“</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/39fe83c8947ef09252518fa2f3a532f0.png" alt="截屏2023-02-13 17.16.26"></p>
+<p>挂载u盘引导分区</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1b8f54875b8d1cd85e70df10b955e558.png" alt="截屏2023-02-13 17.20.43"></p>
+<p>将oc目录复制到硬盘目录下</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d2f05fcfb1409bb7869aa10579f6c7dd.jpeg" alt="img"></p>
+<p>因为我这次是双硬盘双系统，所以可以不用使用工具去创建启动项，直接在bios中将里面将磁盘的引导设置第 1 启动即可</p>
+<p>如果是单硬盘双系统可以使用EasyUEFI或者Diskgenius工具创建启动项</p>
+<p><strong>EasyUEFI 破解版下载地址</strong>：<a target="_blank" rel="noopener" href="https://sqlsec.lanzouw.com/i4amxzmj1cj">https://sqlsec.lanzouw.com/i4amxzmj1cj</a></p>
+<p>EasyUEFI使用步骤如下</p>
+<ol>
+<li><p>选择管理EFI启动项</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/2f414769a83f91fcb91cf6937d4a7928.png" alt="截屏2023-02-13 17.24.29"></p>
+</li>
+<li><p>选择创建新项</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/2a966fbc8c5b868c83e7491319536e20.jpeg" alt="img"></p>
+</li>
+<li><p>操作系统类型选择Linux 或者其他操作系统，描述随便，目标分区选择硬盘的第一个 ESP 引导分区，然后点击浏览数据，选择 EFI&#x2F;OC&#x2F; 目录下的 OpenCpre.efi 文化后，点击确定即可</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ee78ddeae0e4cd7e0868ec861ba81ee7.jpeg" alt="img"></p>
+<p>上移启动项为第一项</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a70b1898ac0eb0ddd0c42d7090af038d.jpeg" alt="img"></p>
+</li>
+</ol>
+<p>如果启动时仍旧无法选择，可以在bios中修改启动项，自此黑苹果安装完毕</p>
+<h1 id="优化-系统迁移"><a href="#优化-系统迁移" class="headerlink" title="优化-系统迁移"></a>优化-系统迁移</h1><p>因为原来的系统盘是256G的stat3固态，现在手头有两个1t固态，一个已经装了macos，另一个准备替换原来的win所在的256G系统盘将系统迁移到1t固态上，正好用上两个固态插槽</p>
+<p>做系统迁移也很简单，直接使用DiskGenius就可以了，当然也有其他的工具比如海康威视固态自带的工具magiclBox，可以系统迁移也可以做全盘迁移</p>
+<ol>
+<li><p>Diskgenius 工具-系统迁移</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/205d0651d48765672d5d09bd5fde2245.png" alt="系统迁移"></p>
+</li>
+<li><p>选择目标盘，目标磁盘可以小于源磁盘，但是目标磁盘容量需大于源磁盘的已用数据总量</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/8e71e0c0936863e3e6f915a5b7d7f5ca.png" alt="系统迁移"></p>
+<p>接下来按提示操作即可，擦出磁盘，迁移模式选择热迁移等待片刻重启即可</p>
+</li>
+</ol>
+<p>具体可以看DG的官方教程：<a target="_blank" rel="noopener" href="https://www.diskgenius.cn/help/system-migration.php">链接</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li><p>目前系统没什么bug，小版本可以直接在系统设置中更新，大版本需要考虑等大神的efi</p>
+<p>但更新完成后请记得关闭Filevault（文件保险箱），更新完成后的设置后可能会出现此小房子图标的勾选，请记得去掉勾选</p>
+</li>
+<li><p>因为是intel网卡，Wi-Fi和蓝牙可以正常使用，随航和隔空投送功能不可使用，需要替换博通网卡，大部分机器显卡没有驱动不能正常使用</p>
+</li>
+<li><p>在就是说Windows系统磁盘格式为ntfs文件系统格式，mac系统磁盘格式为apfs文件系统格式，两系统都能使用的是exFAT格式，如果是u盘或者用一个硬盘安装双系统另一硬盘也可用此格式</p>
+<blockquote>
+<p>读写NTFS问题：MACOS原生仅仅支持对NTFS分区进行读操作，不可进行写入，如使用脚本、软件强制开启NTFS独显，可能会导致WIN蓝屏报错，建议划分出一块EXFAT分区进行读写操作</p>
+</blockquote>
+</li>
+<li><p>如果某个工具一直不成功可以考虑换一个工具</p>
+</li>
+<li><p>在macos中可以明显感觉出比在win11中电脑运行速度有所提升，内存占用也减少了，风扇转的也少了</p>
+</li>
+<li><p>键盘问题有一些按键对应根据键盘区别也有所不同，触控板手势肯定没macbook好用</p>
+</li>
+<li><p>还有意外收获，在win下不能识别也不能正常格式化的金士顿16G u盘，在macos下抹除后竟然可以用了，amazing！！！</p>
+</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/6af074c49a8e4c2ea4913845183d1d70.png" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://oceansec.github.io/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/" title="机械革命z2黑苹果双系统改造计划" target="_blank" rel="external">https://oceansec.github.io/2023/12/05/机械革命z2黑苹果双系统改造计划/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/oceansec" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/oceansec" target="_blank"><span class="text-dark">Ocean</span><small class="ml-1x">Security researcher</small></a></h3>
+        <div>知其黑，守其白</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" title="漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/12/05/%E6%96%B0%E5%8D%9A%E5%AE%A2%E4%BB%8B%E7%BB%8D%EF%BC%8C%E6%97%A7%E5%8D%9A%E5%AE%A2%E5%9C%B0%E5%9D%80%EF%BC%9Aoceansec.blog.csdn.net/" title="新博客介绍，旧博客地址：https://oceansec.blog.csdn.net"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

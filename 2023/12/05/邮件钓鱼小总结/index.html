@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>邮件钓鱼小总结 | Ocean&#39;s Blog</title>
+  <meta name="description" content="事前准备 邮箱、微信号、脉脉账号、匿名手机号等等需要做到匿名，vps、c2 啥的需要注意是不是被标记 多个邮箱要经常着用，发多了被识别成垃圾邮件导致邮箱容易被封 提前设定模糊的人设，微信脉脉这种需要养号，可以定的高级点让人产生想点的欲望，建议每次 hw 换一下名字 最好是用 163 邮箱，然后改一下名字这样收到的比较正式    信息收集  搜索引擎，微信公众号方面搜比较新的准确的信息，一般就是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="邮件钓鱼小总结">
+<meta property="og:url" content="https://oceansec.github.io/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="事前准备 邮箱、微信号、脉脉账号、匿名手机号等等需要做到匿名，vps、c2 啥的需要注意是不是被标记 多个邮箱要经常着用，发多了被识别成垃圾邮件导致邮箱容易被封 提前设定模糊的人设，微信脉脉这种需要养号，可以定的高级点让人产生想点的欲望，建议每次 hw 换一下名字 最好是用 163 邮箱，然后改一下名字这样收到的比较正式    信息收集  搜索引擎，微信公众号方面搜比较新的准确的信息，一般就是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/09/15/z7o8JmQqHZVhTsg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/09/20/dp5mGBvue43V7oJ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/09/20/KSsTcFiECBmeYUa.png">
+<meta property="og:image" content="https://s2.loli.net/2022/09/15/uzC7M8SspafrZtO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/09/15/4eImFu7dQBhVYyW.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/09/15/1qf49GYuLpDhA6B.png">
+<meta property="article:published_time" content="2023-12-05T02:59:04.866Z">
+<meta property="article:modified_time" content="2022-09-20T09:55:30.090Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="钓鱼">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/09/15/z7o8JmQqHZVhTsg.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://oceansec.github.io/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/oceansec" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Ocean</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Security researcher</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RedTeam/">RedTeam</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E7%BD%91/">内网</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%92%93%E9%B1%BC/">钓鱼</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CISCN-wp/" rel="tag">CISCN,wp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-mimikatz/" rel="tag">windows,mimikatz</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%8B%E7%BB%8D/" rel="tag">介绍</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="tag">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" rel="tag">环境搭建,调试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%92%93%E9%B1%BC/" rel="tag">钓鱼</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" rel="tag">靶场,Redteam,内网</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" rel="tag">黑苹果</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CISCN-wp/" style="font-size: 13px;">CISCN,wp</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/windows-mimikatz/" style="font-size: 13px;">windows,mimikatz</a> <a href="/tags/%E4%BB%8B%E7%BB%8D/" style="font-size: 13px;">介绍</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 13px;">博客搭建</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 13px;">总结</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" style="font-size: 13px;">环境搭建,调试</a> <a href="/tags/%E9%92%93%E9%B1%BC/" style="font-size: 13px;">钓鱼</a> <a href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" style="font-size: 13px;">靶场,Redteam,内网</a> <a href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" style="font-size: 14px;">黑苹果</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/" class="title">初见codeql</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T03:10:27.000Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" class="title">邮件钓鱼小总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.866Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RedTeam/">RedTeam</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" class="title">漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.864Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%9C%BA%E6%A2%B0%E9%9D%A9%E5%91%BDz2%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0%E8%AE%A1%E5%88%92/" class="title">机械革命z2黑苹果双系统改造计划</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.862Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%96%B0%E5%8D%9A%E5%AE%A2%E4%BB%8B%E7%BB%8D%EF%BC%8C%E6%97%A7%E5%8D%9A%E5%AE%A2%E5%9C%B0%E5%9D%80%EF%BC%9Aoceansec.blog.csdn.net/" class="title">新博客介绍，旧博客地址：https://oceansec.blog.csdn.net</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.860Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-邮件钓鱼小总结" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      邮件钓鱼小总结
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" class="article-date">
+	  <time datetime="2023-12-05T02:59:04.866Z" itemprop="datePublished">2023-12-05</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E9%92%93%E9%B1%BC/" rel="tag">钓鱼</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><img src="https://s2.loli.net/2022/09/15/z7o8JmQqHZVhTsg.png" alt="img"></p>
+<ol>
+<li><p>事前准备</p>
+<p>邮箱、微信号、脉脉账号、匿名手机号等等需要做到匿名，vps、c2 啥的需要注意是不是被标记</p>
+<p>多个邮箱要经常着用，发多了被识别成垃圾邮件导致邮箱容易被封</p>
+<p>提前设定模糊的人设，微信脉脉这种需要养号，可以定的高级点让人产生想点的欲望，建议每次 hw 换一下名字</p>
+<p>最好是用 163 邮箱，然后改一下名字这样收到的比较正式</p>
+<p><img src="https://s2.loli.net/2022/09/20/dp5mGBvue43V7oJ.png" alt="截屏2022-09-20 17.40.23"></p>
+<p><img src="https://s2.loli.net/2022/09/20/KSsTcFiECBmeYUa.png" alt="截屏2022-09-20 17.41.09"></p>
+</li>
+<li><p>信息收集</p>
+<ol>
+<li><p>搜索引擎，微信公众号方面搜比较新的准确的信息，一般就是找招聘、招标，比如邮箱和电话</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">目标名字</span><br><span class="line">&quot;XXXX&quot;  联系方式</span><br><span class="line">        投递简历</span><br><span class="line">        hr</span><br><span class="line">        招聘</span><br><span class="line">        应聘</span><br><span class="line">        贷款</span><br><span class="line">        手机号</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>邮箱收集网站，用网站找邮箱存在的问题就是邮箱太多太旧没法准确定位到人</p>
+<p><a target="_blank" rel="noopener" href="http://www.skymem.info/">http://www.skymem.info/</a></p>
+<p><a target="_blank" rel="noopener" href="https://phonebook.cz/">https://phonebook.cz/</a></p>
+<p>在收集邮箱之后，我们要对邮箱进行验证，因为有些邮箱目标企业人员已经放弃或不用（离职，职位调动等）</p>
+<p><a target="_blank" rel="noopener" href="https://mailtester.com/testmail.php">https://mailtester.com/testmail.php</a></p>
+<p><a target="_blank" rel="noopener" href="https://app.snov.io/verify/individual-emails">https://app.snov.io/verify/individual-emails</a></p>
+<p>这款工具可以自动组合邮箱地址再根据组合的结果逐个验证</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/angusluk/MailTester">https://github.com/angusluk/MailTester</a><br>在线客服 &#x2F; hr &#x2F; boss 直聘弄微信号</p>
+</li>
+<li><p>构造字典，很多企业邮箱都是姓名拼音@公司域名，用一些字典如：中国人姓名拼音、字母缩写top100，1000，10000，结合已有的信息，多一个邮箱就多一份成功率</p>
+<p>这里可以配合这个网址 <a target="_blank" rel="noopener" href="https://www.aies.cn/pinyin.htm">https://www.aies.cn/pinyin.htm</a> 根据收集到的目标信息制定对应人名字典进行组合</p>
+</li>
+</ol>
+<p>可以把搜集到疑似网络管理员、运维人员、安全部门的人员提取出来，这些人单独写邮箱或者不发，因为这些人安全意识相对较高</p>
+</li>
+<li><p>生成木马，木马要做到最基本的几点</p>
+<ol>
+<li><p>免杀</p>
+</li>
+<li><p>结合收集信息去写木马文案</p>
+<p>比如招聘就投个人简历</p>
+</li>
+<li><p>木马隐蔽性，如：pdf 自解压释放实现</p>
+</li>
+</ol>
+</li>
+<li><p>发送钓鱼</p>
+<ol>
+<li>钓鱼平台大批量发送，不知道内容问题还是 hw 期间比较严，上线率不高</li>
+<li>邮箱单钓，即使是单钓也不能给一个目标发很多，总有安全意识高，内容要结合邮箱来源</li>
+<li>即时通讯软件钓鱼，最好结合打点获得的精准数据，找合适的理由</li>
+</ol>
+</li>
+<li><p>上线 c2&#x2F;cs</p>
+<ol>
+<li>上线时微信通知</li>
+<li>一键持久化</li>
+<li>证书名区分钓鱼目标，方便管理</li>
+<li>定时查看 ip 是不是被标记或有相关情报</li>
+</ol>
+</li>
+</ol>
+<p>注意点：</p>
+<p>钓鱼邮件啥的发送时间需要特别注意，钓鱼不像打点可以24H，需要根据目标单位员工上下班和午休时间相关联，最好是上午发这样时间比较充足</p>
+<p>成功率比较高的几种方式：</p>
+<ol>
+<li>结合已有的系统如：oa 里边的个人信息加微信钓</li>
+<li>最近新出招聘投简历</li>
+<li>找客服投问题</li>
+</ol>
+<p>遇到的问题有些人安全意识比较高或者公司规定只接收 pdf 或者 word 文件，就需要其他的马</p>
+<ol>
+<li>免杀 pdf 捆绑自解压</li>
+<li>结合漏洞钓鱼，coremail、wps、office</li>
+</ol>
+<p><strong>其他文章</strong></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/aatNjey3swZz7T4Yw_LqsQ">红队测试之邮箱打点</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/10731">https://xz.aliyun.com/t/10731</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ZptprvkNXRP0PNpmoXpbFg">Macos钓鱼上线CS踩坑流程</a></p>
+<h2 id="钓鱼模版"><a href="#钓鱼模版" class="headerlink" title="钓鱼模版"></a>钓鱼模版</h2><p>一些网上收集的钓鱼模版</p>
+<p>重置密码</p>
+<p>攻击者伪装成管理员，让受害者点击钓鱼邮件中的链接来修改各种各样的密码！如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xxx,您好</span><br><span class="line">  我是xx部门的信息，我的oa系统账号密码忘记了，麻烦帮我重置一下我的oa帐号密码，然后将新的账号密码发到这个邮箱，十分感谢！</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">大家好：</span><br><span class="line">  近期由于我们公司的邮箱密码泄露，为防止不法分子利用，影响到我们的数据安全，各位员工的密码均需要及时更新修改，在收到邮件的第一时间，请登录如下平台，立即修改自己邮箱的账号密码。</span><br></pre></td></tr></table></figure>
+
+<p>账号解冻</p>
+<p>攻击者伪装成系统管理员，让受害者点击钓鱼邮件中的链接解冻账号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">您好！</span><br><span class="line">  上网行为管理近几日发现您的账号存在异常行为，为了防止您的账号被不法分子盗取，我们暂时将您的账号进行了冻结，如果不是您本人的操作的话，可以点击下面的链接进行解冻。</span><br></pre></td></tr></table></figure>
+
+<p>升级补丁</p>
+<p>攻击者伪装成系统管理员，让受害者点击钓鱼邮件中的附件 升级补丁。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">各位同事，大家好！</span><br><span class="line">  近日微软发布了本月安全更新补丁，其中包含一个RDP（远程桌面服务）远程代码执行漏洞的补丁更新，对应CVE编号为CVE-2019-0708,现需要所有员工的电脑都打上补丁，漏洞补丁直接下载附件即可</span><br></pre></td></tr></table></figure>
+
+<p>信息收集</p>
+<p>利用疫情，让受害者点击钓鱼邮件中的链接反馈相关信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">各位同事，大家好：</span><br><span class="line">近日，在xx的来往人员中进行核算检查时，又发现了核酸检测呈阳性的人员。</span><br><span class="line">    为了更好的配合政府的疫情防控工作的顺利展开，我们公司主动承担了内部人员的信息收集工作，需要员工填写一些个人基本信息、核酸检测信息、行程信息等信息。 </span><br><span class="line">可以扫描二维码填写基本信息</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">各位同事，大家好：</span><br><span class="line">    为落实“xx市疫情防控策略”的工作要求，推进疫情防控相关的数据共享，提升排查效率。我司开发人员设计出一个“疫情防控信息公示系统”，将个人基本信息，行程信息，温度信息，是否打疫苗等相关信息整合到一个公示平台之上，员工可以在线查看有关信息，享受”一站式”服务，同时推进疫情防控工作的展开。</span><br><span class="line">目前该系统处于推广阶段，开发人员将根据用户体验，不断优化业务流程，继续完善平台共功能，欢迎各位领导、同事提出宝贵意见。</span><br><span class="line">平台网址:http:xx.xx.com</span><br></pre></td></tr></table></figure>
+
+<p>节假日礼包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">各位同事好：    </span><br><span class="line">    春节临近，旧的一年即将过去，崭新的一年即将到来，我们将为各位员工准备春节大礼包，现在需要填写一下家庭住址等基本信息</span><br></pre></td></tr></table></figure>
+
+<p>简历模板</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">攻击手段:根据招聘信息对招聘邮箱进行钓鱼邮件攻击，发送带有宏代码的简历文档，及免杀exe程序</span></span><br><span class="line"></span><br><span class="line"><span class="section">邮件模板:</span></span><br><span class="line"><span class="section">您好:</span></span><br><span class="line">看到贵公司官网在招聘产品开发岗，本人7年金融证券相关产品开发经验，具有较为丰富的项目经验，主要擅长Java,C++等语言，附件是本人开发的作品及个人简历，还请贵司查看，期待您的回信，谢谢。</span><br></pre></td></tr></table></figure>
+
+<p>合作模板</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">攻击手段:</span></span><br><span class="line">根据官网搜集到公司的业务功能、合作的企业信息及联系方式</span><br><span class="line">发送钓鱼邮件附件为带有office宏攻击代码的word文档。</span><br><span class="line"></span><br><span class="line"><span class="section">邮件模板:</span></span><br><span class="line">xxx公司您好：</span><br><span class="line">我是xxx公司市场营销部的xxx,我在贵公司官网上了解到贵方有提供xxx业务服务(或经xxx合作商推荐)。满足本公司的项目需求，故有合作意向，以下为本公司的项目合作意向书，请查阅，希望能与贵方合作共赢！</span><br></pre></td></tr></table></figure>
+
+<p>投诉邮件</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">攻击手段: </span></span><br><span class="line">根据官网搜集到目标咨询及投诉渠道获取邮箱账号。</span><br><span class="line">发送钓鱼邮件附件为带有office宏攻击代码的word文档。</span><br><span class="line"></span><br><span class="line"><span class="section">邮件模板:</span></span><br><span class="line"><span class="section">xxx银行您好:</span></span><br><span class="line">我是贵方银行的用户,我于x月x日与行方在线客户进行业务咨询，但是编号xxx客服服务态度恶劣且怠慢，非但没能解决我的问题，还给我带来了很不好的用户体验。相关聊天记已记录在文档里，请行内人员尽快给一个处理的结果。</span><br></pre></td></tr></table></figure>
+
+<p>官方通告</p>
+<p><img src="https://s2.loli.net/2022/09/15/uzC7M8SspafrZtO.png" alt="img"></p>
+<p><img src="https://s2.loli.net/2022/09/15/4eImFu7dQBhVYyW.jpg" alt="2021-07-15-12-56-09"></p>
+<p><img src="https://s2.loli.net/2022/09/15/1qf49GYuLpDhA6B.png" alt="img"></p>
+<p>其他的一些网站</p>
+<p>邮箱收集</p>
+<p>官网找的邮箱适合精准钓鱼，资源列表里的邮箱每个邮箱只发几封防止被封</p>
+<p><a target="_blank" rel="noopener" href="https://hunter.io/">https://hunter.io/</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.skymem.info/">http://www.skymem.info/</a></p>
+<p><a target="_blank" rel="noopener" href="https://phonebook.cz/">https://phonebook.cz/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.email-format.com/i/search/">https://www.email-format.com/i/search/</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/bit4woo/teemo">https://github.com/bit4woo/teemo</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/laramies/theHarvester">https://github.com/laramies/theHarvester</a></p>
+<p>在线发送邮件：</p>
+<p><a href="https://link.zhihu.com/?target=https://emkei.cz/?reCAPTCHAv2">https://emkei.cz/?reCAPTCHAv2</a></p>
+<p><a href="https://link.zhihu.com/?target=http://tool.chacuo.net/mailanonymous">http://tool.chacuo.net/mailanonymous</a></p>
+<p><a href="https://link.zhihu.com/?target=https://ihuan.me/mail">https://ihuan.me/mail</a></p>
+<p><a href="https://link.zhihu.com/?target=http://deadfake.com/Send.aspx">http://deadfake.com/Send.aspx</a></p>
+<p>临时邮箱</p>
+<p><a href="https://link.zhihu.com/?target=http://24mail.chacuo.net/">http://24mail.chacuo.net/</a></p>
+<p><a href="https://link.zhihu.com/?target=https://10minutemail.net/">https://10minutemail.net/</a></p>
+<p><a href="https://link.zhihu.com/?target=http://www.linshiyouxiang.net/">http://www.linshiyouxiang.net/</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://oceansec.github.io/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" title="邮件钓鱼小总结" target="_blank" rel="external">https://oceansec.github.io/2023/12/05/邮件钓鱼小总结/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/oceansec" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/oceansec" target="_blank"><span class="text-dark">Ocean</span><small class="ml-1x">Security researcher</small></a></h3>
+        <div>知其黑，守其白</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/" title="初见codeql"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" title="漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
