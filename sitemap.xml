@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://oceansec.github.io/2023/12/05/%E6%B5%8B%E8%AF%95%E6%96%87%E6%A1%A3/</loc>
+    
+    <lastmod>2023-12-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://oceansec.github.io/2023/12/05/%E5%88%9D%E8%A7%81codeql/</loc>
     
     <lastmod>2023-12-05</lastmod>
@@ -155,7 +164,7 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/tags/index.html</loc>
+    <loc>https://oceansec.github.io/links/index.html</loc>
     
     <lastmod>2022-08-13</lastmod>
     
@@ -173,7 +182,7 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/links/index.html</loc>
+    <loc>https://oceansec.github.io/repository/index.html</loc>
     
     <lastmod>2022-08-13</lastmod>
     
@@ -182,7 +191,7 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/repository/index.html</loc>
+    <loc>https://oceansec.github.io/tags/index.html</loc>
     
     <lastmod>2022-08-13</lastmod>
     
@@ -256,14 +265,14 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/</loc>
+    <loc>https://oceansec.github.io/tags/%E9%92%93%E9%B1%BC/</loc>
     <lastmod>2023-12-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/tags/%E9%92%93%E9%B1%BC/</loc>
+    <loc>https://oceansec.github.io/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/</loc>
     <lastmod>2023-12-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -328,14 +337,14 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/categories/RedTeam/</loc>
+    <loc>https://oceansec.github.io/categories/%E7%A4%BE%E5%B7%A5/</loc>
     <lastmod>2023-12-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/categories/%E7%A4%BE%E5%B7%A5/</loc>
+    <loc>https://oceansec.github.io/categories/RedTeam/</loc>
     <lastmod>2023-12-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
