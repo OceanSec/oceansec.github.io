@@ -137,7 +137,16 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/404.html</loc>
+    <loc>https://oceansec.github.io/about/index.html</loc>
+    
+    <lastmod>2022-08-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://oceansec.github.io/books/index.html</loc>
     
     <lastmod>2022-08-13</lastmod>
     
@@ -155,25 +164,16 @@
   </url>
   
   <url>
+    <loc>https://oceansec.github.io/404.html</loc>
+    
+    <lastmod>2022-08-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://oceansec.github.io/links/index.html</loc>
-    
-    <lastmod>2022-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://oceansec.github.io/about/index.html</loc>
-    
-    <lastmod>2022-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://oceansec.github.io/books/index.html</loc>
     
     <lastmod>2022-08-13</lastmod>
     
@@ -223,14 +223,14 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
+    <loc>https://oceansec.github.io/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/</loc>
     <lastmod>2023-12-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/</loc>
+    <loc>https://oceansec.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
     <lastmod>2023-12-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -295,14 +295,14 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
+    <loc>https://oceansec.github.io/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/</loc>
     <lastmod>2023-12-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/</loc>
+    <loc>https://oceansec.github.io/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
     <lastmod>2023-12-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
