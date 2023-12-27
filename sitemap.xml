@@ -155,16 +155,7 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/books/index.html</loc>
-    
-    <lastmod>2022-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://oceansec.github.io/categories/index.html</loc>
+    <loc>https://oceansec.github.io/repository/index.html</loc>
     
     <lastmod>2022-08-13</lastmod>
     
@@ -182,7 +173,16 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/repository/index.html</loc>
+    <loc>https://oceansec.github.io/categories/index.html</loc>
+    
+    <lastmod>2022-08-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://oceansec.github.io/books/index.html</loc>
     
     <lastmod>2022-08-13</lastmod>
     
@@ -251,6 +251,13 @@
   </url>
   
   <url>
+    <loc>https://oceansec.github.io/tags/windows-mimikatz/</loc>
+    <lastmod>2023-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://oceansec.github.io/tags/%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2023-12-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -265,21 +272,14 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/tags/%E9%92%93%E9%B1%BC/</loc>
-    <lastmod>2023-12-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://oceansec.github.io/tags/windows-mimikatz/</loc>
-    <lastmod>2023-12-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://oceansec.github.io/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/</loc>
+    <lastmod>2023-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://oceansec.github.io/tags/%E9%92%93%E9%B1%BC/</loc>
     <lastmod>2023-12-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -330,6 +330,13 @@
   </url>
   
   <url>
+    <loc>https://oceansec.github.io/categories/Windows/</loc>
+    <lastmod>2023-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://oceansec.github.io/categories/%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2023-12-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -344,21 +351,14 @@
   </url>
   
   <url>
-    <loc>https://oceansec.github.io/categories/%E7%A4%BE%E5%B7%A5/</loc>
-    <lastmod>2023-12-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://oceansec.github.io/categories/Windows/</loc>
-    <lastmod>2023-12-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://oceansec.github.io/categories/RedTeam/</loc>
+    <lastmod>2023-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://oceansec.github.io/categories/%E7%A4%BE%E5%B7%A5/</loc>
     <lastmod>2023-12-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
