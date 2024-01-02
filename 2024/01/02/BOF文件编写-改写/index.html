@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>CS BOF文件编写/改写 | Ocean&#39;s Blog</title>
+  <meta name="description" content="Beacon Object File(BOF) cs 4.1后添加的新功能，  Beacon在接收执行obj前，Cobalt Strike会先对这个obj文件进行一些处理，比如解析obj文件中一些需要的段.text，.data，在处理一些表比如IMAGE_RELOCATION，IMAGE_SYMBOL等等，然后在经过一系列的处理后，会把需要的部分按照一定格式打包起来随后在发送给Beacon，这时B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS BOF文件编写&#x2F;改写">
+<meta property="og:url" content="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Beacon Object File(BOF) cs 4.1后添加的新功能，  Beacon在接收执行obj前，Cobalt Strike会先对这个obj文件进行一些处理，比如解析obj文件中一些需要的段.text，.data，在处理一些表比如IMAGE_RELOCATION，IMAGE_SYMBOL等等，然后在经过一系列的处理后，会把需要的部分按照一定格式打包起来随后在发送给Beacon，这时B">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103237373.png">
+<meta property="og:image" content="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103310526.png">
+<meta property="og:image" content="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103350426.png">
+<meta property="og:image" content="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103506658.png">
+<meta property="og:image" content="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103532153.png">
+<meta property="og:image" content="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102145032414.png">
+<meta property="article:published_time" content="2024-01-02T07:55:21.000Z">
+<meta property="article:modified_time" content="2024-01-02T07:57:00.089Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103237373.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/oceansec" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Ocean</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Security researcher</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RedTeam/">RedTeam</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8B%E7%BB%8D/">介绍</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E7%BD%91/">内网</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%BB%E7%BB%93/">总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%92%93%E9%B1%BC/">钓鱼</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CISCN-wp/" rel="tag">CISCN,wp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-mimikatz/" rel="tag">windows,mimikatz</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E5%AE%89%E5%85%A8/" rel="tag">云安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%8B%E7%BB%8D/" rel="tag">介绍</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="tag">博客搭建</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" rel="tag">环境搭建,调试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%92%93%E9%B1%BC/" rel="tag">钓鱼</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" rel="tag">靶场,Redteam,内网</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" rel="tag">黑苹果</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CISCN-wp/" style="font-size: 13px;">CISCN,wp</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/windows-mimikatz/" style="font-size: 13px;">windows,mimikatz</a> <a href="/tags/%E4%BA%91%E5%AE%89%E5%85%A8/" style="font-size: 13px;">云安全</a> <a href="/tags/%E4%BB%8B%E7%BB%8D/" style="font-size: 13px;">介绍</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 13px;">博客搭建</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 13px;">总结</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-%E8%B0%83%E8%AF%95/" style="font-size: 13px;">环境搭建,调试</a> <a href="/tags/%E9%92%93%E9%B1%BC/" style="font-size: 13px;">钓鱼</a> <a href="/tags/%E9%9D%B6%E5%9C%BA-Redteam-%E5%86%85%E7%BD%91/" style="font-size: 13px;">靶场,Redteam,内网</a> <a href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/" style="font-size: 14px;">黑苹果</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/" class="title">CS BOF文件编写/改写</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-02T07:55:21.000Z" itemprop="datePublished">2024-01-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/27/etcd%E6%9C%AA%E6%8E%88%E6%9D%83%E5%88%B0%E6%8E%A7%E5%88%B6k8s%E9%9B%86%E7%BE%A4/" class="title">etcd未授权到控制k8s集群</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-27T01:03:48.375Z" itemprop="datePublished">2023-12-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E5%88%9D%E8%A7%81codeql/" class="title">初见codeql</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T03:10:27.000Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%A4%BE%E5%B7%A5/">社工</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E9%82%AE%E4%BB%B6%E9%92%93%E9%B1%BC%E5%B0%8F%E6%80%BB%E7%BB%93/" class="title">邮件钓鱼小总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.866Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RedTeam/">RedTeam</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/05/%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98-%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA%E4%BB%8E%E5%A4%96%E7%BD%91%20Weblogic%20%E6%89%93%E8%BF%9B%E5%86%85%E7%BD%91%EF%BC%8C%E5%86%8D%E5%88%B0%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE%E6%8E%A5%E7%AE%A1%E5%9F%9F%E6%8E%A7/" class="title">漏洞靶场实战-红队靶场从外网 Weblogic 打进内网，再到约束委派接管域控</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-05T02:59:04.864Z" itemprop="datePublished">2023-12-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-BOF文件编写-改写" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CS BOF文件编写/改写
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/" class="article-date">
+	  <time datetime="2024-01-02T07:55:21.000Z" itemprop="datePublished">2024-01-02</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>Beacon Object File(BOF) cs 4.1后添加的新功能，</p>
+<blockquote>
+<p>Beacon在接收执行obj前，Cobalt Strike会先对这个obj文件进行一些处理，比如解析obj文件中一些需要的段.text，.data，在处理一些表比如IMAGE_RELOCATION，IMAGE_SYMBOL等等，然后在经过一系列的处理后，会把需要的部分按照一定格式打包起来随后在发送给Beacon，这时Beacon接收到的是Cobalt Strike已经解析处理过的obj文件数据，并非是原本的obj文件，所以Beacon主要做的是必须是在进程内才能确定并完成的事情比如处理重定位，填充函数指针等等，最后去执行go入口点</p>
+</blockquote>
+<p>obj 目标文件就是源代码编译之后但是未进行链接的那些中间文件（Windows 下的 .obj 和 Linux 下的 .o，本文主要指windows 下的 obj ）</p>
+<h2 id="使用BOF框架开发"><a href="#使用BOF框架开发" class="headerlink" title="使用BOF框架开发"></a>使用BOF框架开发</h2><p>很多大佬在 GitHub 发了一些模板，可以去参照</p>
+<ul>
+<li>bof的visual studio模板：<a target="_blank" rel="noopener" href="https://github.com/securifybv/Visual-Studio-BOF-template">https://github.com/securifybv/Visual-Studio-BOF-template</a></li>
+<li>bof所需的头文件：<a target="_blank" rel="noopener" href="https://github.com/trustedsec/CS-Situational-Awareness-BOF">https://github.com/trustedsec/CS-Situational-Awareness-BOF</a></li>
+<li>整理好的，通过DLL名称将WindowsApi函数进行了归类：<a target="_blank" rel="noopener" href="https://github.com/evilashz/Visual-Studio-BOF-template">https://github.com/evilashz/Visual-Studio-BOF-template</a></li>
+</ul>
+<p>将下载的模板文件解压至visualstudio的模板目录(<code>%UserProfile%\Documents\Visual Studio 2022\Templates\ProjectTemplates</code>)，随后重启VisualStuido</p>
+<p><img src="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103237373.png" alt="image-20240102103237373"></p>
+<p>在创建项目时选择类型为<code>Beacon Object File</code>的项目</p>
+<p><img src="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103310526.png" alt="image-20240102103310526"></p>
+<p>在头文件列表可以看到<code>beacon.h</code>和<code>bofdefs.h</code></p>
+<p><img src="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103350426.png" alt="image-20240102103350426"></p>
+<p>build-&gt;batch build 打开项目的 Batch 生成，勾选上 BOF 配置</p>
+<p><img src="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103506658.png" alt="image-20240102103506658"></p>
+<p>配置管理器的编译环境也需设置为BOF</p>
+<p><img src="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102103532153.png" alt="image-20240102103532153"></p>
+<p>一个简单的 bof 项目，用于实现向控制台输出字符串</p>
+<ul>
+<li>BOF 入口：代码定义了 BOF 的入口函数 go，当你在 Cobalt Strike 中使用 inline-execute 命令加载并执行你的 BOF时，这个函数将被调用。你可以在这个函数中添加你的 BOF 代码</li>
+<li>非 BOF 入口：这部分代码定义了非 BOF 的入口函数 main。当你在非 Cobalt Strike 环境中运行你的代码时，这个函数将被调用。你可以在这个函数中添加你的非 BOF 代码</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;bofdefs.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> BOF</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">go</span><span class="params">(<span class="type">char</span>* buff, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">    BeaconPrintf(CALLBACK_OUTPUT, <span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> BOF</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span> &#123;</span><br><span class="line"></span><br><span class="line">    go(<span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>项目生成后会生成一个<code>.obj</code>文件，也就是编译未链接的目标文件，在CobaltStrike中你可以使用<code>inline-execute</code>命令来加载并执行你的.obj文件，此命令将你的 <code>.obj</code> 文件加载到 Beacon 的内存中，然后调用你的 <code>go</code> 函数，命令格式如下所示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">beacon&gt; inline-execute your_bof.obj</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/image-20240102145032414.png" alt="image-20240102145032414"></p>
+<h2 id="修改为BOF格式"><a href="#修改为BOF格式" class="headerlink" title="修改为BOF格式"></a>修改为BOF格式</h2><p>在原有利用代码基础上修改为 BOF 代码步骤</p>
+<ol>
+<li>引入 beacon.h 头文件，beacon.h 定义了与 Cobalt Strike Beacon 交互所需要的各种数据类型和函数</li>
+<li>把所有字符串和函数改成 ascii 的</li>
+<li>把所有函数改成 beacon.h 定义的编写约定</li>
+<li>入口函数由 main 修改为 go</li>
+<li>生成 bof 文件</li>
+</ol>
+<p>将 <a target="_blank" rel="noopener" href="https://idiotc4t.com/persistence/get-computer-installed-software">get-computer-installed-software</a> 修改为 bof 加载，代码通过查询注册表获取当前机器安装的程序，这种方式仅对完整安装的软件有效，如果是绿色版的软件则只能通过手工或自动化搜索的方式查找，如果是x64位系统则需要对32位程序也进行遍历（x64系统存在注册表重定位）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;tchar.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">EnumInstalledSoft</span><span class="params">(TCHAR* subKey, TCHAR* subKeyName)</span> </span>&#123;</span><br><span class="line">    HKEY hKey = <span class="literal">NULL</span>;</span><br><span class="line">    HKEY hSubKey = <span class="literal">NULL</span>;</span><br><span class="line">    DWORD dwIndexs = <span class="number">0</span>;</span><br><span class="line">    TCHAR keyName[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">    DWORD dwLength = MAX_PATH;  <span class="comment">// 修改为合适的长度</span></span><br><span class="line">    TCHAR subKeyValue[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">RegOpenKeyEx</span>(HKEY_LOCAL_MACHINE, subKey, <span class="number">0</span>, KEY_READ, &amp;hKey) == ERROR_SUCCESS)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="built_in">RegEnumKeyEx</span>(hKey, dwIndexs, keyName, &amp;dwLength, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>) == ERROR_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">RegOpenKey</span>(hKey, keyName, &amp;hSubKey);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">RegQueryValueEx</span>(hSubKey, subKeyName, <span class="literal">NULL</span>, <span class="literal">NULL</span>, (LPBYTE)subKeyValue, &amp;dwLength) == ERROR_SUCCESS)</span><br><span class="line">            &#123;</span><br><span class="line">                _tprintf(_T(<span class="string">&quot;%s : %s  \n&quot;</span>), keyName, subKeyValue);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">RegCloseKey</span>(hSubKey);</span><br><span class="line">            hSubKey = <span class="literal">NULL</span>;</span><br><span class="line">            ++dwIndexs;</span><br><span class="line">            dwLength = MAX_PATH;  <span class="comment">// 重置为合适的长度</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">RegCloseKey</span>(hKey);</span><br><span class="line">        <span class="keyword">return</span> TRUE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> FALSE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">EnumInstalledSoft</span>((TCHAR*)_T(<span class="string">&quot;SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall&quot;</span>), (TCHAR*)_T(<span class="string">&quot;DisplayName&quot;</span>));</span><br><span class="line">    <span class="built_in">EnumInstalledSoft</span>((TCHAR*)_T(<span class="string">&quot;Software\\Classes\\Installer\\Products&quot;</span>), (TCHAR*)_T(<span class="string">&quot;ProductName&quot;</span>));</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来导入 beacon.h 和替换 BOF 约定的写法，函数原型使用 <a target="_blank" rel="noopener" href="https://github.com/dtmsecurity/bof_helper">bof_helper</a> 自动化帮我们生成好bof约定的函数原型和写法，如把 GetProcAddress 换成 KERNEL32$GetProcAddress 的写法，这里直接使用工具，同时也需要把输出函数换成 beacon 导出的函数</p>
+<p><strong>BOF 格式代码</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="comment">// 1.添加 beacon.h 头</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;beacon.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.添加函数引入约定，可以去找找其他项目中有没有使用相同的函数</span></span><br><span class="line">DECLSPEC_IMPORT WINADVAPI LONG WINAPI ADVAPI32$<span class="built_in">RegOpenKeyExA</span>(HKEY, LPCWSTR, DWORD, REGSAM, PHKEY);</span><br><span class="line">DECLSPEC_IMPORT WINADVAPI LONG WINAPI ADVAPI32$<span class="built_in">RegOpenKeyA</span>(HKEY, LPCWSTR, PHKEY);</span><br><span class="line">DECLSPEC_IMPORT WINADVAPI LONG WINAPI ADVAPI32$<span class="built_in">RegCloseKey</span>(HKEY);</span><br><span class="line">DECLSPEC_IMPORT WINADVAPI LONG WINAPI ADVAPI32$<span class="built_in">RegEnumKeyExA</span>(</span><br><span class="line">	HKEY,</span><br><span class="line">	DWORD,</span><br><span class="line">	LPWSTR,</span><br><span class="line">	LPDWORD,</span><br><span class="line">	LPDWORD,</span><br><span class="line">	LPWSTR,</span><br><span class="line">	LPDWORD,</span><br><span class="line">	PFILETIME</span><br><span class="line">);</span><br><span class="line">DECLSPEC_IMPORT WINADVAPI LONG WINAPI ADVAPI32$<span class="built_in">RegQueryValueExA</span>(</span><br><span class="line">	HKEY,</span><br><span class="line">	LPCWSTR,</span><br><span class="line">	LPDWORD,</span><br><span class="line">	LPDWORD,</span><br><span class="line">	LPBYTE,</span><br><span class="line">	LPDWORD</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">EnumInstalledSoft</span><span class="params">(CHAR* subKey, CHAR* subKeyName)</span> </span>&#123;</span><br><span class="line">	HKEY hKey = <span class="literal">NULL</span>;</span><br><span class="line">	HKEY hSubKey = <span class="literal">NULL</span>;</span><br><span class="line">	DWORD dwIndexs = <span class="number">0</span>;</span><br><span class="line">	CHAR keyName[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	DWORD dwLength = <span class="number">256</span>;</span><br><span class="line">	CHAR subKeyValue[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (ADVAPI32$<span class="built_in">RegOpenKeyExA</span>(HKEY_LOCAL_MACHINE, subKey, <span class="number">0</span>, KEY_READ, &amp;hKey) == ERROR_SUCCESS)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">while</span> (ADVAPI32$<span class="built_in">RegEnumKeyExA</span>(hKey, dwIndexs, keyName, &amp;dwLength, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>) == ERROR_SUCCESS)</span><br><span class="line">		&#123;</span><br><span class="line">			ADVAPI32$<span class="built_in">RegOpenKeyA</span>(hKey, keyName, &amp;hSubKey);</span><br><span class="line">			ADVAPI32$<span class="built_in">RegQueryValueExA</span>(hSubKey,</span><br><span class="line">				subKeyName,</span><br><span class="line">				<span class="literal">NULL</span>,</span><br><span class="line">				<span class="literal">NULL</span>,</span><br><span class="line">				(LPBYTE)subKeyValue,</span><br><span class="line">				&amp;dwLength);</span><br><span class="line">			<span class="built_in">BeaconPrintf</span>(CALLBACK_OUTPUT, <span class="string">&quot;%s : %s  \n&quot;</span>, keyName, subKeyValue);</span><br><span class="line">			ADVAPI32$<span class="built_in">RegCloseKey</span>(hSubKey);</span><br><span class="line">			hSubKey = <span class="number">0</span>;</span><br><span class="line">			++dwIndexs;</span><br><span class="line">			dwLength = <span class="number">256</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> FALSE;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (hKey != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		ADVAPI32$<span class="built_in">RegCloseKey</span>(hKey);</span><br><span class="line">		<span class="keyword">return</span> TRUE;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">go</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">EnumInstalledSoft</span>((CHAR*)<span class="string">&quot;SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall&quot;</span>, (CHAR*)<span class="string">&quot;DisplayName&quot;</span>);</span><br><span class="line">	<span class="built_in">EnumInstalledSoft</span>((CHAR*)<span class="string">&quot;Software\\Classes\\Installer\\Products&quot;</span>, (CHAR*)<span class="string">&quot;ProductName&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其余的 bof 格式差异</p>
+<ul>
+<li><p>参数传入</p>
+<p>目前代码没有传入参数，如果有参数传入，需要先声明参数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">go</span><span class="params">(<span class="type">char</span>* args,<span class="type">int</span> length)</span></span>&#123;</span><br><span class="line">    datap parser;</span><br><span class="line">    <span class="type">char</span>* str_arg;</span><br><span class="line">    <span class="type">int</span> num_arg;</span><br><span class="line">    </span><br><span class="line">    str_arg = <span class="built_in">BeaconDataExtract</span>(&amp;parser,<span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出</p>
+<p>使用 BeaconPrintf 替换 printf</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BeaconPrintf</span>(CALLBACK_ERROR,<span class="string">&quot;ERROR&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>使用 gcc 进行编译，需要提前<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_64064486/article/details/123940266">安装</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c 源文件.c -o 输出文件.o</span><br></pre></td></tr></table></figure>
+
+<p>ps：注意需要安装 64 位的程序，才能编译 64 位的 obj 文件，<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d66c2f2e3537">MinGW-w64安装教程</a></p>
+<p>inline-execute 在 cs 中直接使用 bof 文件</p>
+<h3 id="bof-缺点"><a href="#bof-缺点" class="headerlink" title="bof 缺点"></a><strong>bof 缺点</strong></h3><ol>
+<li>似乎无法使用初始化为0的全局变量</li>
+<li>不太适合跑驻留型的任务，跑大量循环会崩溃</li>
+<li>一旦引发崩溃整个beacon就会崩掉</li>
+<li>不易调试</li>
+<li>似乎输出不能使用unicode</li>
+</ol>
+<p>参考文章</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://wbglil.gitbook.io/cobalt-strike/cobalt-strike-yuan-li-jie-shao/untitled-3">Beacon Object File(BOF实现原理)</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xf555er/article/details/132416469">内网渗透神器CobaltStrike之BOF编写(十一)</a></li>
+<li><a target="_blank" rel="noopener" href="https://tttang.com/archive/1786/#toc_0x08-execuate-assembly">Cobalt Strike BOF原理分析</a></li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/" title="CS BOF文件编写/改写" target="_blank" rel="external">https://oceansec.github.io/2024/01/02/BOF文件编写-改写/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/oceansec" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/oceansec" target="_blank"><span class="text-dark">Ocean</span><small class="ml-1x">Security researcher</small></a></h3>
+        <div>知其黑，守其白</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/12/27/etcd%E6%9C%AA%E6%8E%88%E6%9D%83%E5%88%B0%E6%8E%A7%E5%88%B6k8s%E9%9B%86%E7%BE%A4/" title="etcd未授权到控制k8s集群"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/oceansec" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

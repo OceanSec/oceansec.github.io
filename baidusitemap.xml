@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://oceansec.github.io/2024/01/02/BOF%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99-%E6%94%B9%E5%86%99/</loc>
+    <lastmod>2024-01-02</lastmod>
+  </url>
+  <url>
     <loc>https://oceansec.github.io/2023/12/27/etcd%E6%9C%AA%E6%8E%88%E6%9D%83%E5%88%B0%E6%8E%A7%E5%88%B6k8s%E9%9B%86%E7%BE%A4/</loc>
     <lastmod>2023-12-27</lastmod>
   </url>
